@@ -8,7 +8,7 @@
         {
             if (Directory.Exists(DirectoryPath) == false) Directory.CreateDirectory(DirectoryPath);
 
-            DirectoryPath += DateTime.Now.ToString("t").Replace('.', '_') + ".txt";
+            DirectoryPath += DateTime.Now.ToString("d").Replace('.', '_') + ".txt";
             _writer = new(DirectoryPath);
             _writer.AutoFlush = true;
 
