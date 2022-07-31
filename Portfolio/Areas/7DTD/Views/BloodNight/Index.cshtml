@@ -1,0 +1,26 @@
+﻿@model BloodNightView
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p>
+        <p>На сервере сейчас @Model.ServerTime.Day день, @Model.ServerTime.Hour час</p>
+        <p>Кровавая ночь будет: @Model.BloodNightDay</p>
+        <p>Ночь начнется через: @Model.TimeToBloodNight.Hours часов и @Model.TimeToBloodNight.Minutes минут</p>
+    </p>
+  
+    <form method="post" asp-action="Update">
+        <input type="text" name="Day" placeholder="Day" />
+        <input type="text" name="Hour" placeholder="Hour" />
+        <input type="text" name="MinsPerDay" placeholder="MinsPerDay" />
+        <input type="submit" />
+    </form>
+</body>
+</html>

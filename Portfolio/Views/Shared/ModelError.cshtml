@@ -1,0 +1,15 @@
+﻿@model Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary
+@{
+}
+
+<strong>Errors</strong>
+
+@foreach (var item in Model.Values)
+{
+    <ul>
+        @foreach (var error in item.Errors)
+        {
+            <li>@error.ErrorMessage</li>
+        }
+    </ul>
+}
