@@ -10,7 +10,8 @@ using Portfolio.Data.Logger;
 var builder = WebApplication.CreateBuilder(args);
 
 #region Services
-builder.Logging.AddProvider(new JsonLoggerProvider());
+if (builder.Environment.IsProduction())
+    builder.Logging.AddProvider(new TextLoggerProvider());
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
 builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString));
