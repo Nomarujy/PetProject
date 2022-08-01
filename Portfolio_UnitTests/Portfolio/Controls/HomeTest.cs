@@ -3,18 +3,21 @@ using Portfolio.Data.ContactService;
 using Portfolio.Controls;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Portfolio_UnitTests.Portfolio.Controls
 {
     public class HomeTest
     {
         private readonly Mock<IContactRepository> contactRepositoryMock;
+        private readonly Mock<ILogger<HomeController>> loggerMock;
         private readonly HomeController controller;
 
         public HomeTest()
         {
             contactRepositoryMock = new();
-            controller = new(contactRepositoryMock.Object);
+            loggerMock = new();
+            controller = new(contactRepositoryMock.Object, loggerMock.Object);
         }
 
         [Fact]
@@ -28,7 +31,7 @@ namespace Portfolio_UnitTests.Portfolio.Controls
         [Fact]
         public void IndexReturnErrorPage_If_ModelNotValid()
         {
-            ContactWithMe contact = new();
+            Contact contact = new();
             controller.ModelState.AddModelError("Any", "Any");
 
             var result = controller.Index(contact) as ViewResult;
@@ -40,7 +43,7 @@ namespace Portfolio_UnitTests.Portfolio.Controls
         [Fact]
         public void IndexWriteInDb()
         {
-            ContactWithMe contact = new();
+            Contact contact = new();
 
             var result = controller.Index(contact);
 

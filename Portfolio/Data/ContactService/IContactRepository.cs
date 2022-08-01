@@ -4,9 +4,9 @@ namespace Portfolio.Data.ContactService
 {
     public interface IContactRepository
     {
-        ContactWithMe[] GetFirst(int Count);
-        ContactWithMe[] GetLast(int Count);
+        Contact[] GetFirst(int Page, int Count);
+        Contact[] GetLast(int Page, int Count);
 
-        void Add(ContactWithMe contact);
+        void Add(Contact contact);
     }
 }

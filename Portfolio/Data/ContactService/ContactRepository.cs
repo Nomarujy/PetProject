@@ -12,19 +12,20 @@ namespace Portfolio.Data.ContactService
             _databaseContext = databaseContext;
         }
 
-        public void Add(ContactWithMe contact)
+        public void Add(Contact contact)
         {
-            _databaseContext.contactWithMe.Add(contact);
+            _databaseContext.Contact.Add(contact);
+            _databaseContext.SaveChanges();
         }
 
-        public ContactWithMe[] GetFirst(int Count)
+        public Contact[] GetFirst(int Page, int Count)
         {
-            return _databaseContext.contactWithMe.OrderBy(c => c.Id).Take(10).ToArray();
+            return _databaseContext.Contact.OrderBy(c => c.Id).Skip(Page * Count).Take(10).ToArray();
         }
 
-        public ContactWithMe[] GetLast(int Count)
+        public Contact[] GetLast(int Page, int Count)
         {
-            return _databaseContext.contactWithMe.OrderByDescending(c => c.Id).Take(10).ToArray();
+            return _databaseContext.Contact.OrderByDescending(c => c.Id).Skip(Page * Count).Take(10).ToArray();
         }
     }
 }

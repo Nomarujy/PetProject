@@ -22,25 +22,25 @@ namespace Portfolio.Controls
         }
 
         [HttpPost]
-        public IActionResult Index(ContactWithMe contact)
+        public IActionResult Index(Contact contact)
         {
             if (ModelState.IsValid)
             {
                 _contactRepository.Add(contact);
-                logger.LogInformation("Получено сообщение от {0}", HttpContext.Request.Host.Value);
-                return Ok();
+                logger.LogInformation("Получено сообщение от {HttpContext}", HttpContext.Request.Host.Value);
+                return Redirect("/");
             }
 
             return View("ModelError", ModelState);
         }
 
         [HttpGet]
-        public IActionResult Messages(bool Descending = false, int count = 10)
+        public IActionResult Messages(bool Descending = false, int Page = 0, int Count = 10)
         {
-            ContactWithMe[] result;
+            Contact[] result;
 
-            if (Descending) result = _contactRepository.GetLast(count);
-            else result = _contactRepository.GetFirst(count);
+            if (Descending) result = _contactRepository.GetLast(Page, Count);
+            else result = _contactRepository.GetFirst(Page, Count);
 
             return View(result);
         }
