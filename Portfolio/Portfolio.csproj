@@ -16,6 +16,9 @@
 
   <ItemGroup>
     <Folder Include="Areas\7DTD\Views\Shared\" />
+    <Folder Include="Areas\News\Data\" />
+    <Folder Include="Areas\News\Models\" />
+    <Folder Include="Areas\News\Views\Manage\" />
   </ItemGroup>
 
 </Project>

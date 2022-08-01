@@ -31,4 +31,6 @@ app.MapControllerRoute(name: "default", pattern: "{action}", new { controller = 
 
 app.MapAreaControllerRoute(name: "7DaysToDie", "7DTD", "7DTD/{action}", new { controller = "BloodNight", Action = "Index" });
 
+app.MapAreaControllerRoute(name: "News", "News", "News/{controller}/{action}", new { controller = "Read", Action = "Index" });
+
 app.Run();
