@@ -10,12 +10,13 @@ namespace Portfolio.Models.Authorization
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(c => c.Id).HasName("PK_ID");
-            builder.HasAlternateKey(c => c.RoleId).HasName("FK_RoleId");
+            builder.HasKey(c => c.Id);
+            builder.HasAlternateKey(c => c.RoleId);
             builder.HasIndex(c => c.Email);
         }
     }
 
+    [EntityTypeConfiguration(typeof(UserConfiguration))]
     public class User
     {
         public User() { }

@@ -91,7 +91,7 @@ namespace Portfolio.Controls
                 {
                     foreach (var permision in user.Role.Permisions)
                     {
-                        Claims.Add(new Claim(permision, "Have"));
+                        Claims.Add(new Claim(permision.Category, permision.GetCRUD()));
                     }
                 }
             }

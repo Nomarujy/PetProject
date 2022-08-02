@@ -8,12 +8,13 @@ namespace Portfolio.Models.Authorization
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasKey(c => c.Id).HasName("PK_Id");
-            builder.HasAlternateKey(c => c.GroupName).HasName("FK_GroupName");
+            builder.HasKey(c => c.Id);
+            builder.HasAlternateKey(c => c.GroupName);
             builder.HasIndex(c => c.Name);
         }
     }
 
+    [EntityTypeConfiguration(typeof(RoleConfiguration))]
     public class Role
     {
         public int Id { get; set; }
@@ -22,7 +23,7 @@ namespace Portfolio.Models.Authorization
         public Group? Group { get; set; }
 
         public string Name { get; set; } = null!;
-        public string[]? Permisions { get; set; }
+        public Permision[]? Permisions { get; set; }
 
         public static Role GetDefaultRole()
         {

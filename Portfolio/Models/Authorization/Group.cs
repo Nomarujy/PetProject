@@ -1,5 +1,16 @@
-﻿namespace Portfolio.Models.Authorization
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Portfolio.Models.Authorization
 {
+    public class GroupConfiguration : IEntityTypeConfiguration<Group>
+    {
+        public void Configure(EntityTypeBuilder<Group> builder)
+        {
+            builder.HasKey(g => g.Name);
+        }
+    }
+
     public class Group
     {
         public string Name { get; set; } = string.Empty;
