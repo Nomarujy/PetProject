@@ -1,23 +1,20 @@
-﻿using Portfolio.Models;
-using Portfolio.Data.ContactService;
-using Portfolio.Controls;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Portfolio.Controls;
+using Portfolio.Data.Database.ContactService;
+using Portfolio.Models;
 
-namespace Portfolio_UnitTests.Portfolio.Controls
+namespace Portfolio_UnitTests.Controls
 {
     public class HomeTest
     {
         private readonly Mock<IContactRepository> contactRepositoryMock;
-        private readonly Mock<ILogger<HomeController>> loggerMock;
         private readonly HomeController controller;
 
         public HomeTest()
         {
             contactRepositoryMock = new();
-            loggerMock = new();
-            controller = new(contactRepositoryMock.Object, loggerMock.Object);
+            controller = new(contactRepositoryMock.Object);
         }
 
         [Fact]

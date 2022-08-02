@@ -1,13 +1,16 @@
-﻿using System.Text;
+﻿using System.Text.Json;
+
 namespace Portfolio.Data.Logger
 {
-    public class TextLogger : ILogger, IDisposable
+    public class JsonLogger<T> : ILogger<T>, IDisposable
     {
-        private readonly StreamWriter _writer;
+        private readonly StreamWriter writer;
+        private T category;
 
-        public TextLogger(StreamWriter writer)
+        public JsonLogger(StreamWriter Writer, T Category)
         {
-            _writer = writer;
+            writer = Writer;
+            category = Category;
         }
 
         public IDisposable BeginScope<TState>(TState state)
@@ -25,15 +28,18 @@ namespace Portfolio.Data.Logger
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            var sb = new StringBuilder();
+            LogModel model = new(
+                LogLevel: logLevel.ToString(), 
+                Category: category?.ToString(),
+                EventId: eventId.ToString(), 
+                Message: formatter(state,
+                exception));
 
-            sb.Append($"[{DateTime.Now.ToString("g")}]\t");
-            sb.Append($"{logLevel}\t");
-            sb.Append(formatter(state, exception));
+            var json = JsonSerializer.Serialize(model);
 
             lock (_lock)
             {
-                _writer.WriteLine(sb.ToString());
+                writer.WriteLine(json);
             }
         }
 

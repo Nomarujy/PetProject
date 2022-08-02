@@ -8,7 +8,7 @@ using Portfolio.Data.Database.ContactService;
 var builder = WebApplication.CreateBuilder(args);
 
 #region Services
-//builder.Logging.AddProvider(new TextLoggerProvider());
+//builder.Logging.AddProvider(new JsonLoggerProvider());
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
 builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString));

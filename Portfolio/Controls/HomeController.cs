@@ -7,12 +7,10 @@ namespace Portfolio.Controls
     public class HomeController : Controller
     {
         private readonly IContactRepository _contactRepository;
-        private readonly ILogger logger;
 
-        public HomeController(IContactRepository databaseContext, ILogger<HomeController> Logger)
+        public HomeController(IContactRepository databaseContext)
         {
             _contactRepository = databaseContext;
-            logger = Logger;
         }
 
         [HttpGet]
@@ -27,7 +25,6 @@ namespace Portfolio.Controls
             if (ModelState.IsValid)
             {
                 _contactRepository.Add(contact);
-                logger.LogInformation("Получено сообщение от {HttpContext}", HttpContext.Request.Host.Value);
                 return Redirect("/");
             }
 
