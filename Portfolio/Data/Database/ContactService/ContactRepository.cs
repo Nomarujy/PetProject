@@ -1,7 +1,7 @@
-﻿using Portfolio.Data.MainContext;
+﻿using Portfolio.Data.Database.Context;
 using Portfolio.Models;
 
-namespace Portfolio.Data.ContactService
+namespace Portfolio.Data.Database.ContactService
 {
     public class ContactRepository : IContactRepository
     {

@@ -1,6 +1,6 @@
 ﻿using Portfolio.Models;
 
-namespace Portfolio.Data.ContactService
+namespace Portfolio.Data.Database.ContactService
 {
     public interface IContactRepository
     {

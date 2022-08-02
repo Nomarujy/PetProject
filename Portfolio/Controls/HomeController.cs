@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data.ContactService;
 using Portfolio.Models;
+using Portfolio.Data.Database.ContactService;
 
 namespace Portfolio.Controls
 {
@@ -11,8 +11,8 @@ namespace Portfolio.Controls
 
         public HomeController(IContactRepository databaseContext, ILogger<HomeController> Logger)
         {
-            logger = Logger;
             _contactRepository = databaseContext;
+            logger = Logger;
         }
 
         [HttpGet]
