@@ -9,7 +9,6 @@ namespace Portfolio.Models.Authorization
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.HasAlternateKey(c => c.GroupName);
             builder.HasIndex(c => c.Name);
         }
     }
