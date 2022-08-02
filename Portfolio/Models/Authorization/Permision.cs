@@ -12,6 +12,7 @@ namespace Portfolio.Models.Authorization
         }
     }
 
+    [EntityTypeConfiguration(typeof(PermisionConfiguration))]
     public class Permision
     {
         public string Category { get; set; } = null!;
