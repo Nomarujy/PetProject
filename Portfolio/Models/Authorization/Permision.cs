@@ -1,7 +1,17 @@
 ﻿using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Portfolio.Models.Authorization
 {
+    partial class PermisionConfiguration : IEntityTypeConfiguration<Permision>
+    {
+        public void Configure(EntityTypeBuilder<Permision> builder)
+        {
+            builder.HasKey(p => p.Category);
+        }
+    }
+
     public class Permision
     {
         public string Category { get; set; } = null!;

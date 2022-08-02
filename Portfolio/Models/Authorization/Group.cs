@@ -11,7 +11,6 @@ namespace Portfolio.Models.Authorization
         }
     }
 
-    [EntityTypeConfiguration(typeof(Group))]
     public class Group
     {
         public string Name { get; set; } = string.Empty;
