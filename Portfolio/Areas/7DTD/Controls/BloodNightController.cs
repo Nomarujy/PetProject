@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Portfolio.Areas._7DTD.Data.BloodNightRepository;
-using Portfolio.Areas._7DTD.Models;
 
 namespace Portfolio.Areas._7DTD.Controls
 {

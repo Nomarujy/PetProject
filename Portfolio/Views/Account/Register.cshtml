@@ -1,0 +1,12 @@
+﻿@model RegisterForm
+@{
+    ViewBag.Title = "Index";
+}
+
+<form asp-antiforgery="true">
+    <input asp-for="Username" placeholder="Username" />
+    <input asp-for="Email" placeholder="Email"/>
+    <input type="password" asp-for="Password" placeholder="Password"/>
+    <input type="password" asp-for="RepeatPassword" placeholder="RepeatPassword"/>
+    <input type="submit" value="Send"/>
+</form>

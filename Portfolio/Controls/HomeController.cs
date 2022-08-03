@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data.ContactService;
+using Portfolio.Data.Database.ContactService;
 using Portfolio.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Portfolio.Controls
 {
@@ -9,10 +10,10 @@ namespace Portfolio.Controls
         private readonly IContactRepository _contactRepository;
         private readonly ILogger logger;
 
-        public HomeController(IContactRepository databaseContext, ILogger<HomeController> Logger)
+        public HomeController(IContactRepository databaseContext, ILogger<HomeController> logger)
         {
-            logger = Logger;
             _contactRepository = databaseContext;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -21,20 +22,21 @@ namespace Portfolio.Controls
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Index(Contact contact)
         {
             if (ModelState.IsValid)
             {
                 _contactRepository.Add(contact);
-                logger.LogInformation("Получено сообщение от {HttpContext}", HttpContext.Request.Host.Value);
+                logger.LogInformation("Geter message by {name}, IP: {IP}", contact.Name, HttpContext.Connection.RemoteIpAddress );
                 return Redirect("/");
             }
+
 
             return View("ModelError", ModelState);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles ="Admin")]
         public IActionResult Messages(bool Descending = false, int Page = 0, int Count = 10)
         {
             Contact[] result;

@@ -5,7 +5,7 @@ namespace Portfolio_UnitTests.Areas._7DTD.Model
     public class ViewResultTest
     {
         [Theory]
-        [MemberData("GetTestDaya")]
+        [MemberData("GetTestData")]
         public void ViewReturnCorrectDaya(ServerTime time, Expected expected)
         {
             var view = new BloodNightView(time);

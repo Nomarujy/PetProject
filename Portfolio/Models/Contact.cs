@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Portfolio.Data.Extension.Validation;
+using Portfolio.Models.Extension;
+using Portfolio.Models.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
@@ -28,7 +29,7 @@ namespace Portfolio.Models
             List<ValidationResult> result = new();
 
             //TO:DO Better email validation
-            if (Email.Contains('@') == false) result.AddToResult("Email haven`t @", "Email");
+            if (EmailValidation.EmailIsValid(Email) == false) result.AddToResult("Email not valid", "Email");
 
             return result;
         }
