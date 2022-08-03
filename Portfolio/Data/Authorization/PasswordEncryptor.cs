@@ -16,20 +16,19 @@ namespace Portfolio.Data.Authorization
         {
             byte[] salt = RandomNumberGenerator.GetBytes(SaltLenght);
 
-            byte[] result = Encrypt(password, salt);
-
-            return Convert.ToBase64String(result);
+            return Encrypt(password, salt);
         }
 
         public bool PasswordEqual(string password, string Hash)
         {
             byte[] salt = GetSaltFromHash(Hash);
 
-            string HashedPassword = Convert.ToBase64String(Encrypt(password, salt));
+            string HashedPassword = Encrypt(password, salt);
+
             return Hash.Equals(HashedPassword);
         }
 
-        private static byte[] Encrypt(string password, byte[] salt)
+        private static string Encrypt(string password, byte[] salt)
         {
             var hashed = KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA512, EncryptCount, bytesRequested)
                 .Take(PasswordLenght).ToArray();
@@ -39,7 +38,7 @@ namespace Portfolio.Data.Authorization
             salt.CopyTo(result, 0);
             hashed.CopyTo(result, SaltLenght);
 
-            return result;
+            return Convert.ToBase64String(result); ;
         }
 
         private static byte[] GetSaltFromHash(string Hash)

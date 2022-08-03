@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using Portfolio.Models.Authorization;
-using Portfolio.Data.Database.AccountService;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Data.Authorization;
+using Portfolio.Data.Database.AccountService;
+using Portfolio.Models.Authorization;
+using System.Security.Claims;
 
 namespace Portfolio.Controls
 {
@@ -11,15 +11,17 @@ namespace Portfolio.Controls
     {
         private readonly IAccountRepository database;
         private readonly IPasswordEncryptor passwordEncryptor;
+        private readonly ILogger logger;
 
-        public AccountController(IAccountRepository database, IPasswordEncryptor passwordEncryptor)
+        public AccountController(IAccountRepository database, IPasswordEncryptor passwordEncryptor, ILogger<AccountController> logger)
         {
             this.database = database;
             this.passwordEncryptor = passwordEncryptor;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult AccessDenied()
         {
             return View();
         }
@@ -42,38 +44,41 @@ namespace Portfolio.Controls
             return LocalRedirect("/");
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Register(RegisterForm userForm)
         {
             if (ModelState.IsValid == false) return BadRequest(ModelState.Values);
 
-            User user = new(userForm);
+            User user = new(userForm, passwordEncryptor);
 
+            database.AddUser(user);
+            logger.LogInformation("Registered new user {user} by IP: {IP}", user.Email, HttpContext?.Connection.RemoteIpAddress);
 
             SignInUser(user);
-            return View();
+            return LocalRedirect("/");
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Login(LoginForm userForm, string? returnUrl)
         {
-            User? user = database.GetUser(userForm.Email);
+            User? user = database.GetUserWithRole(userForm.Email);
 
-            if (user != null) return BadRequest("UserNotFound");
+            if (user == null) return BadRequest("UserNotFound");
 
-            if (passwordEncryptor.PasswordEqual(userForm.Password, user!.Password) == false)
+            if (passwordEncryptor.PasswordEqual(userForm.Password, user.Password) == false)
             {
+                logger.LogInformation("Failed login atempt in {user} by IP: {IP}", user.Email, HttpContext?.Connection.RemoteIpAddress);
                 return BadRequest();
             }
 
-
-
             SignInUser(user!);
-            return LocalRedirect(returnUrl??"/");
+            return LocalRedirect(returnUrl ?? "/");
         }
 
         private void SignInUser(User user)
         {
+            Permision?[] permisions = database.GetPermisionse(user.RoleId);
+
             var Claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Email, user.Email),
@@ -87,18 +92,19 @@ namespace Portfolio.Controls
                 if (user.Role.GroupName != null)
                     Claims.Add(new Claim("Group", user.Role.GroupName!));
 
-                if (user.Role.Permisions != null)
+                if (permisions != null)
                 {
-                    foreach (var permision in user.Role.Permisions)
+                    foreach (var permision in permisions)
                     {
-                        Claims.Add(new Claim(permision.Category, permision.GetCRUD()));
+                        Claims.Add(new Claim(permision!.Category, permision.GetCRUD()));
                     }
                 }
             }
 
-            var Identities = new ClaimsIdentity(Claims);
+            var Identities = new ClaimsIdentity(Claims, "Cookies");
             var ClaimPrinc = new ClaimsPrincipal(Identities);
             HttpContext.SignInAsync(ClaimPrinc);
+            logger.LogInformation("Sing in {user} by IP: {IP}", user.Email, HttpContext?.Connection.RemoteIpAddress);
         }
     }
 }

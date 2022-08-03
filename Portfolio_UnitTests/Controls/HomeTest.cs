@@ -3,6 +3,7 @@ using Moq;
 using Portfolio.Controls;
 using Portfolio.Data.Database.ContactService;
 using Portfolio.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Portfolio_UnitTests.Controls
 {
@@ -10,11 +11,13 @@ namespace Portfolio_UnitTests.Controls
     {
         private readonly Mock<IContactRepository> contactRepositoryMock;
         private readonly HomeController controller;
+        private readonly Mock<ILogger<HomeController>> loggerMock;
 
         public HomeTest()
         {
             contactRepositoryMock = new();
-            controller = new(contactRepositoryMock.Object);
+            loggerMock = new();
+            controller = new(contactRepositoryMock.Object, loggerMock.Object);
         }
 
         [Fact]

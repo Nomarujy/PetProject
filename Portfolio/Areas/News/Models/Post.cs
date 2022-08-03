@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Portfolio.Areas.News.Models
@@ -8,7 +7,7 @@ namespace Portfolio.Areas.News.Models
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            
+
         }
     }
 

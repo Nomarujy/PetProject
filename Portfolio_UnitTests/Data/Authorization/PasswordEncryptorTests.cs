@@ -4,7 +4,7 @@ namespace Portfolio_UnitTests.Data.Authorization
 {
     public class PasswordEncryptorTests
     {
-        private PasswordEncryptor passwordEncryptor;
+        private readonly PasswordEncryptor passwordEncryptor;
         public PasswordEncryptorTests()
         {
             this.passwordEncryptor = new();

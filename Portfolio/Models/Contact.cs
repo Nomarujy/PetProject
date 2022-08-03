@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Portfolio.Models.Extension;
-using System.ComponentModel.DataAnnotations;
 using Portfolio.Models.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
 {

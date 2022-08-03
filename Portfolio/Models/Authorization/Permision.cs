@@ -1,10 +1,10 @@
-﻿using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text;
 
 namespace Portfolio.Models.Authorization
 {
-    partial class PermisionConfiguration : IEntityTypeConfiguration<Permision>
+    internal partial class PermisionConfiguration : IEntityTypeConfiguration<Permision>
     {
         public void Configure(EntityTypeBuilder<Permision> builder)
         {
@@ -15,6 +15,9 @@ namespace Portfolio.Models.Authorization
     [EntityTypeConfiguration(typeof(PermisionConfiguration))]
     public class Permision
     {
+        public int RoleId { get; set; }
+        public Role Role { get; set; } = null!;
+
         public string Category { get; set; } = null!;
 
         public bool Create { get; set; } = false;

@@ -1,16 +1,20 @@
 ﻿using System.Text.Json;
+
 namespace Portfolio.Data.Logger
 {
     public class JsonLoggerProvider : ILoggerProvider
     {
-        private StreamWriter _writer;
+        private readonly StreamWriter _writer;
 
         public JsonLoggerProvider(string DirectoryPath = "./Logs/")
         {
             if (Directory.Exists(DirectoryPath) == false) Directory.CreateDirectory(DirectoryPath);
 
-            _writer = new(DirectoryPath, true);
-            _writer.AutoFlush = true;
+            DirectoryPath += $"{DateTime.UtcNow.ToString("d").Replace('.', '_')}.json";
+            _writer = new(DirectoryPath, true)
+            {
+                AutoFlush = true
+            };
 
             var json = JsonSerializer.Serialize(new LogModel("Information", "JsonProvider", null, "Initial json provider"));
             _writer.WriteLine(json);
@@ -24,6 +28,7 @@ namespace Portfolio.Data.Logger
         public void Dispose()
         {
             _writer.Close();
+            GC.SuppressFinalize(this);
         }
     }
 }

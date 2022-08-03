@@ -24,9 +24,15 @@ namespace Portfolio.Models.Authorization
         public string Name { get; set; } = null!;
         public Permision[]? Permisions { get; set; }
 
-        public static Role GetDefaultRole()
+        public static Role GetDefaultUser()
         {
-            return new Role { Id = 1, Name="User" };
+            return new Role { Id = 1, Name = "User" };
         }
+
+        public static Role GetDefaultAdmin()
+        {
+            return new Role { Id = 2, Name = "Admin" };
+        }
+
     }
 }

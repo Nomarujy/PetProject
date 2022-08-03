@@ -6,8 +6,9 @@ namespace Portfolio.Data.Database.AccountService
     {
         public User? GetUser(string Email);
 
-        public User? GetUserWithPermisionse(string Email);
+        public User? GetUserWithRole(string Email);
 
         public void AddUser(User user);
+        public Permision?[] GetPermisionse(int RoleId);
     }
 }

@@ -18,15 +18,20 @@ namespace Portfolio.Data.Database.AccountService
             return database.Users.FirstOrDefault(u => u.Email == Email);
         }
 
-        public User? GetUserWithPermisionse(string Email)
+        public User? GetUserWithRole(string Email)
         {
-            return database.Users.Include(u => u.Role).ThenInclude(r=>r.Permisions).FirstOrDefault(u => u.Email == Email);
+            return database.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == Email);
+        }
+
+        public Permision?[] GetPermisionse(int RoleId)
+        {
+            return database.Permisions.Where(p=> p.RoleId == RoleId).ToArray();
         }
 
         public void AddUser(User user)
         {
             database.Users.Add(user);
-            database.SaveChangesAsync();
+            database.SaveChanges();
         }
     }
 }

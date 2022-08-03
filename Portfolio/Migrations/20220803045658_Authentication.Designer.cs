@@ -12,8 +12,8 @@ using Portfolio.Data.Database.Context;
 namespace Portfolio.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220802170322_Authorize")]
-    partial class Authorize
+    [Migration("20220803045658_Authentication")]
+    partial class Authentication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,7 +48,7 @@ namespace Portfolio.Migrations
                     b.Property<bool>("Read")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RoleId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Update")
@@ -58,7 +58,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Permision");
+                    b.ToTable("Permisions");
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authorization.Role", b =>
@@ -89,14 +89,18 @@ namespace Portfolio.Migrations
                         {
                             Id = 1,
                             Name = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin"
                         });
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authorization.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Baned")
                         .HasColumnType("bit");
@@ -106,10 +110,6 @@ namespace Portfolio.Migrations
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -122,9 +122,7 @@ namespace Portfolio.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email");
+                    b.HasKey("Email");
 
                     b.HasIndex("RoleId");
 
@@ -163,9 +161,13 @@ namespace Portfolio.Migrations
 
             modelBuilder.Entity("Portfolio.Models.Authorization.Permision", b =>
                 {
-                    b.HasOne("Portfolio.Models.Authorization.Role", null)
+                    b.HasOne("Portfolio.Models.Authorization.Role", "Role")
                         .WithMany("Permisions")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authorization.Role", b =>

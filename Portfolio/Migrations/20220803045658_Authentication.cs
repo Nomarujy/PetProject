@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Portfolio.Migrations
 {
-    public partial class Authorize : Migration
+    public partial class Authentication : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,42 +40,42 @@ namespace Portfolio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Permision",
+                name: "Permisions",
                 columns: table => new
                 {
                     Category = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     Create = table.Column<bool>(type: "bit", nullable: false),
                     Read = table.Column<bool>(type: "bit", nullable: false),
                     Update = table.Column<bool>(type: "bit", nullable: false),
-                    Delete = table.Column<bool>(type: "bit", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: true)
+                    Delete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permision", x => x.Category);
+                    table.PrimaryKey("PK_Permisions", x => x.Category);
                     table.ForeignKey(
-                        name: "FK_Permision_Roles_RoleId",
+                        name: "FK_Permisions_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false),
                     Baned = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Email);
                     table.ForeignKey(
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
@@ -89,9 +89,14 @@ namespace Portfolio.Migrations
                 columns: new[] { "Id", "GroupName", "Name" },
                 values: new object[] { 1, null, "User" });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "GroupName", "Name" },
+                values: new object[] { 2, null, "Admin" });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Permision_RoleId",
-                table: "Permision",
+                name: "IX_Permisions_RoleId",
+                table: "Permisions",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
@@ -105,11 +110,6 @@ namespace Portfolio.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
@@ -118,7 +118,7 @@ namespace Portfolio.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Permision");
+                name: "Permisions");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
+using Portfolio.Data.Authorization;
 
 namespace Portfolio.Models.Authorization
 {
@@ -10,8 +8,7 @@ namespace Portfolio.Models.Authorization
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(c => c.Id);
-            builder.HasIndex(c => c.Email);
+            builder.HasKey(c => c.Email);
         }
     }
 
@@ -20,27 +17,27 @@ namespace Portfolio.Models.Authorization
     {
         public User() { }
 
-        public User(RegisterForm form)
+        public User(RegisterForm form, IPasswordEncryptor encryptor)
         {
-            Id = Guid.NewGuid();
+            Email = form.Email;
+            Password = encryptor.EncryptPassword(form.Password);
+
             Created = DateTime.UtcNow;
 
-            Role = Role.GetDefaultRole();
+            RoleId = Role.GetDefaultUser().Id;
 
             Username = form.Username;
-            Email = form.Email;
-            Password = form.Password;
         }
 
-        public Guid Id { get; set; }
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
+
         public DateTime Created { get; set; }
 
         public int RoleId { get; set; }
         public Role Role { get; set; } = null!;
 
         public string Username { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public string Password { get; set; } = null!;
 
         public bool Deleted { get; set; } = false;
         public bool Baned { get; set; } = false;

@@ -29,9 +29,9 @@ namespace Portfolio.Data.Logger
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             LogModel model = new(
-                LogLevel: logLevel.ToString(), 
+                LogLevel: logLevel.ToString(),
                 Category: category?.ToString(),
-                EventId: eventId.ToString(), 
+                EventId: eventId.ToString(),
                 Message: formatter(state,
                 exception));
 
@@ -43,7 +43,7 @@ namespace Portfolio.Data.Logger
             }
         }
 
-        public void Dispose() 
+        public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
