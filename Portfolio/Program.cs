@@ -1,30 +1,22 @@
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
-using Portfolio.Areas._7DTD.Data.BloodNightRepository;
-using Portfolio.Data.Authorization;
-using Portfolio.Data.Database.AccountService;
-using Portfolio.Data.Database.ContactService;
-using Portfolio.Data.Database.Context;
-using Portfolio.Data.Logger;
+using Portfolio.Utilites;
+using Portfolio.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region Services
-if (builder.Environment.IsProduction())
-    builder.Logging.AddProvider(new TextLoggerProvider());
+builder.AddLogerProviders();
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
-builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString));
+
+builder.Services.AddDatabase(connectionString);
+builder.Services.AddRepository();
 
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication("Cookies").AddCookie();
 builder.Services.AddAuthorization();
-
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IPasswordEncryptor, PasswordEncryptor>();
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddSingleton<IBloodNightRepository, BloodNightRepository>();
 
 
 #endregion Services

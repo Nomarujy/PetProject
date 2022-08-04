@@ -1,53 +1,74 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Moq;
+﻿using Microsoft.AspNetCore.Http;
 using Portfolio.Controls;
-using Portfolio.Data.Database.ContactService;
-using Portfolio.Models;
-using Microsoft.Extensions.Logging;
+using Portfolio.Data.Contact.Repository;
+using Portfolio.Models.Contact;
+using Portfolio_UnitTests.Mock;
 
 namespace Portfolio_UnitTests.Controls
 {
     public class HomeTest
     {
-        private readonly Mock<IContactRepository> contactRepositoryMock;
-        private readonly HomeController controller;
+        private readonly Mock<IContactRepository> databaseMock;
         private readonly Mock<ILogger<HomeController>> loggerMock;
+
+        private readonly HomeController controller;
+
 
         public HomeTest()
         {
-            contactRepositoryMock = new();
+            databaseMock = new();
             loggerMock = new();
-            controller = new(contactRepositoryMock.Object, loggerMock.Object);
+
+            controller = new(databaseMock.Object, loggerMock.Object);
+            controller.ControllerContext.HttpContext = MockHttpContext.GetMockObject();
         }
 
         [Fact]
         public void IndexReturnPage()
         {
-            var result = controller.Index();
+            var page = controller.Index();
+            Assert.True(page is ViewResult);
+        }
 
-            Assert.IsType<ViewResult>(result);
+        [Fact]
+        public void MessagesReturnPage()
+        {
+            var page = controller.Messages() as ViewResult;
+
+            Assert.NotNull(page);
+            Assert.True(page?.Model is ContactModel[]);
+            databaseMock.Verify(c => c.GetFirst(0, 10));
+        }
+
+        [Fact]
+        public void MessagesReturnModelByDescending()
+        {
+            controller.Messages(true, 0, 1);
+
+            databaseMock.Verify(c => c.GetLast(0, 1));
         }
 
         [Fact]
         public void IndexReturnErrorPage_If_ModelNotValid()
         {
-            Contact contact = new();
+            ContactModel contact = new();
             controller.ModelState.AddModelError("Any", "Any");
 
             var result = controller.Index(contact) as ViewResult;
 
-            Assert.NotNull(result);
-            Assert.Equal("ModelError", result!.ViewName);
+            Assert.Equal("ModelError", result?.ViewName);
         }
 
         [Fact]
-        public void IndexWriteInDb()
+        public void IndexWriteInDatabase()
         {
-            Contact contact = new();
+            ContactModel contact = new();
 
-            var result = controller.Index(contact);
+            var res = controller.Index(contact);
 
-            contactRepositoryMock.Verify(r => r.Add(contact));
+            Assert.True(res is RedirectResult);
+            databaseMock.Verify(d => d.Add(contact));
         }
+        
     }
 }

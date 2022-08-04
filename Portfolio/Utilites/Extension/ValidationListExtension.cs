@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Portfolio.Models.Extension
+namespace Portfolio.Utilites.Extension
 {
     public static class ValidationListExtension
     {

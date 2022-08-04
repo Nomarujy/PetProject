@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Data.Logger
+﻿namespace Portfolio.Utilites.Logger
 {
     public class LogModel
     {
@@ -7,14 +7,14 @@
             Time = DateTime.UtcNow.ToString("g");
             this.LogLevel = LogLevel;
             this.Category = Category;
-            this.eventId = eventId;
+            this.EventId = EventId;
             this.Message = Message;
         }
 
         public string Time { get; set; }
         public string LogLevel { get; set; }
         public string? Category { get; set; }
-        public string? eventId { get; set; }
+        public string? EventId { get; set; }
         public string Message { get; set; }
     }
 }

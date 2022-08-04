@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 
-namespace Portfolio.Data.Logger
+namespace Portfolio.Utilites.Logger.Json
 {
     public class JsonLogger<T> : ILogger<T>, IDisposable
     {
         private readonly StreamWriter writer;
-        private T category;
+        private readonly T category;
 
         public JsonLogger(StreamWriter Writer, T Category)
         {

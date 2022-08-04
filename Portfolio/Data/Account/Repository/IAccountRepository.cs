@@ -1,6 +1,7 @@
 ﻿using Portfolio.Models.Authorization;
+using System.Security.Claims;
 
-namespace Portfolio.Data.Database.AccountService
+namespace Portfolio.Data.Account.Repository
 {
     public interface IAccountRepository
     {
@@ -10,5 +11,7 @@ namespace Portfolio.Data.Database.AccountService
 
         public void AddUser(User user);
         public Permision?[] GetPermisionse(int RoleId);
+
+        public ClaimsPrincipal GetClaimPrincipals(User user);
     }
 }

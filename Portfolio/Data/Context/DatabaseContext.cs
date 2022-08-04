@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.Models;
 using Portfolio.Models.Authorization;
+using Portfolio.Models.Contact;
 
-namespace Portfolio.Data.Database.Context
+namespace Portfolio.Data.Context
 {
     public class DatabaseContext : DbContext
     {
@@ -15,11 +15,11 @@ namespace Portfolio.Data.Database.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Role>().HasData(
-                Role.GetDefaultUser(), 
+                Role.GetDefaultUser(),
                 Role.GetDefaultAdmin());
         }
 
-        public DbSet<Contact> Contact { get; set; } = null!;
+        public DbSet<ContactModel> Contact { get; set; } = null!;
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Group> Groups { get; set; } = null!;
