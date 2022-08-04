@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\News\Views\Manage\**" />
+    <Content Remove="Areas\News\Views\Manage\**" />
+    <EmbeddedResource Remove="Areas\News\Views\Manage\**" />
+    <None Remove="Areas\News\Views\Manage\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -17,8 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\7DTD\Views\Shared\" />
-    <Folder Include="Areas\News\Data\" />
-    <Folder Include="Areas\News\Views\Manage\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 

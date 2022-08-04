@@ -54,7 +54,6 @@ namespace Portfolio.Controls
             logger.LogInformation("Registered new user {user} by IP: {IP}",
                 user.Email, HttpContext.Connection.RemoteIpAddress);
 
-
             return Redirect("/");
         }
 

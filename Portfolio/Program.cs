@@ -7,6 +7,7 @@ using Portfolio.Utilites;
 var builder = WebApplication.CreateBuilder(args);
 
 #region Services
+
 builder.AddLogerProviders();
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
