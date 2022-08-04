@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Portfolio.Data.Logger
+namespace Portfolio.Utilites.Logger.Json
 {
     public class JsonLoggerProvider : ILoggerProvider
     {

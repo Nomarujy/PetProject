@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Portfolio.Data.Authorization;
+using Portfolio.Data.Account.Encryptor;
 
 namespace Portfolio.Models.Authorization
 {

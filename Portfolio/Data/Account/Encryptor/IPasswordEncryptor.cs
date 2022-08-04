@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Data.Authorization
+﻿namespace Portfolio.Data.Account.Encryptor
 {
     public interface IPasswordEncryptor
     {

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data.Database.ContactService;
-using Portfolio.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Portfolio.Data.Contact.Repository;
+using Portfolio.Models.Contact;
 
 namespace Portfolio.Controls
 {
@@ -22,29 +22,29 @@ namespace Portfolio.Controls
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(Contact contact)
-        {
-            if (ModelState.IsValid)
-            {
-                _contactRepository.Add(contact);
-                logger.LogInformation("Geter message by {name}, IP: {IP}", contact.Name, HttpContext.Connection.RemoteIpAddress );
-                return Redirect("/");
-            }
-
-
-            return View("ModelError", ModelState);
-        }
-
-        [HttpGet, Authorize(Roles ="Admin")]
+        [HttpGet, Authorize(Roles = "Admin")]
         public IActionResult Messages(bool Descending = false, int Page = 0, int Count = 10)
         {
-            Contact[] result;
+            ContactModel[] result;
 
             if (Descending) result = _contactRepository.GetLast(Page, Count);
             else result = _contactRepository.GetFirst(Page, Count);
 
             return View(result);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Index(ContactModel contact)
+        {
+            if (ModelState.IsValid)
+            {
+                _contactRepository.Add(contact);
+                logger.LogInformation("Geter message by {name}, IP: {IP}", 
+                    contact.Name, HttpContext.Connection.RemoteIpAddress);
+                return Redirect("/");
+            }
+
+            return View("ModelError", ModelState);
         }
     }
 }

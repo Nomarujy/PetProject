@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
-namespace Portfolio.Data.Authorization
+namespace Portfolio.Data.Account.Encryptor
 {
     public class PasswordEncryptor : IPasswordEncryptor
     {
