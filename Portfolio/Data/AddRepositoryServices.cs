@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Context;
 using Portfolio.Data.Account.Repository;
+using Portfolio.Data.Account.Encryptor;
 using Portfolio.Data.Contact.Repository;
 
 namespace Portfolio.Data
@@ -15,6 +16,7 @@ namespace Portfolio.Data
         public static void AddRepository(this IServiceCollection service)
         {
             service.AddScoped<IAccountRepository, AccountRepository>();
+            service.AddSingleton<IPasswordEncryptor, PasswordEncryptor>();
             service.AddScoped<IContactRepository, ContactRepository>();
         }
     }
