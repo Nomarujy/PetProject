@@ -39,7 +39,7 @@ namespace Portfolio.Controls
             if (ModelState.IsValid)
             {
                 _contactRepository.Add(contact);
-                logger.LogInformation("Geter message by {name}, IP: {IP}", 
+                logger.LogInformation("Geter message by {name}, IP: {IP}",
                     contact.Name, HttpContext.Connection.RemoteIpAddress);
                 return Redirect("/");
             }

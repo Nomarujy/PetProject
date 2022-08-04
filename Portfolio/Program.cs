@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
-using Portfolio.Utilites;
 using Portfolio.Data;
+using Portfolio.Utilites;
 
 var builder = WebApplication.CreateBuilder(args);
 
