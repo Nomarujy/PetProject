@@ -1,6 +1,5 @@
 ﻿using Portfolio.Models.Validation;
 using Portfolio.Utilites.Extension;
-
 using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models.Authorization

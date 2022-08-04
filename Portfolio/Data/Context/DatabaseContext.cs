@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Portfolio.Areas.News.Models.Post;
 using Portfolio.Models.Authorization;
 using Portfolio.Models.Contact;
-using Portfolio.Areas.News.Models.Post;
 
 namespace Portfolio.Data.Context
 {
@@ -23,7 +23,6 @@ namespace Portfolio.Data.Context
         public DbSet<ContactModel> Contact { get; set; } = null!;
 
         #region Authorization
-        
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Group> Groups { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;

@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using Portfolio.Utilites.Extension;
 using System.ComponentModel.DataAnnotations;
-using Portfolio.Utilites.Extension;
+using System.Drawing;
 
 namespace Portfolio.Areas.News.Models.Post
 {

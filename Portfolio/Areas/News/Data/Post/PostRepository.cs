@@ -1,6 +1,6 @@
-﻿using Portfolio.Areas.News.Models.Post;
+﻿using Microsoft.EntityFrameworkCore;
+using Portfolio.Areas.News.Models.Post;
 using Portfolio.Data.Context;
-using Microsoft.EntityFrameworkCore;
 namespace Portfolio.Areas.News.Data.Post
 {
     public class PostRepository : IPostRepository
@@ -20,7 +20,7 @@ namespace Portfolio.Areas.News.Data.Post
 
         public PostModel? GetPostWithAuthor(int Id)
         {
-            return database.Posts.Include(p=>p.Author).FirstOrDefault(p => p.Id == Id);
+            return database.Posts.Include(p => p.Author).FirstOrDefault(p => p.Id == Id);
         }
     }
 }

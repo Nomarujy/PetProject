@@ -1,4 +1,5 @@
 ﻿using Portfolio.Areas._7DTD.Data.BloodNightRepository;
+using Portfolio.Areas.News.Data;
 
 namespace Portfolio.Areas
 {
@@ -7,6 +8,7 @@ namespace Portfolio.Areas
         public static void AddAreaServices(this IServiceCollection services)
         {
             services.AddSingleton<IBloodNightRepository, BloodNightRepository>();
+            services.AddNewsServices();
         }
     }
 }
