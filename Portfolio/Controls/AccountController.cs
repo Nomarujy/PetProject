@@ -37,6 +37,13 @@ namespace Portfolio.Controls
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Info()
+        {
+            var model = User.Identity;
+            return View(model);
+        }
+
         public IActionResult Logout()
         {
             return SignOut(new AuthenticationProperties() { RedirectUri = "/" }, "Cookies");

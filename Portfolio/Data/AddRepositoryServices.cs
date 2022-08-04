@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Account.Encryptor;
 using Portfolio.Data.Account.Repository;
+using Portfolio.Data.Account.Encryptor;
 using Portfolio.Data.Contact.Repository;
 using Portfolio.Data.Context;
 

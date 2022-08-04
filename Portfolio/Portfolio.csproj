@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\7DTD\Views\Shared\" />
+    <Folder Include="Areas\News\Data\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 
