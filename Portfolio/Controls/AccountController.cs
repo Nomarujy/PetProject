@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Portfolio.Data.Account.Encryptor;
 using Portfolio.Data.Account.Repository;
 using Portfolio.Models.Authorization;
-using System.Security.Claims;
 
 namespace Portfolio.Controls
 {
@@ -40,7 +39,7 @@ namespace Portfolio.Controls
 
         public IActionResult Logout()
         {
-            return SignOut(new AuthenticationProperties() { RedirectUri="/"},"Cookies");
+            return SignOut(new AuthenticationProperties() { RedirectUri = "/" }, "Cookies");
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -52,10 +51,10 @@ namespace Portfolio.Controls
 
             database.AddUser(user);
 
-            logger.LogInformation("Registered new user {user} by IP: {IP}", 
+            logger.LogInformation("Registered new user {user} by IP: {IP}",
                 user.Email, HttpContext.Connection.RemoteIpAddress);
 
-            
+
             return Redirect("/");
         }
 
@@ -68,15 +67,15 @@ namespace Portfolio.Controls
 
             if (false == encryptor.PasswordEqual(userForm.Password, user.Password))
             {
-                logger.LogInformation("Failed login atempt in {user} by IP: {IP}", 
+                logger.LogInformation("Failed login atempt in {user} by IP: {IP}",
                     user.Email, HttpContext.Connection.RemoteIpAddress);
                 return BadRequest();
             }
 
             var Principal = database.GetClaimPrincipals(user);
 
-            return SignIn(Principal, new AuthenticationProperties() 
-            { AllowRefresh = true, RedirectUri=returnUrl??"/" }); ;
+            return SignIn(Principal, new AuthenticationProperties()
+            { AllowRefresh = true, RedirectUri = returnUrl ?? "/" }); ;
         }
     }
 }

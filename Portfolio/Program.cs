@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
-using Portfolio.Utilites;
+using Portfolio.Areas;
 using Portfolio.Data;
+using Portfolio.Utilites;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,23 +12,25 @@ builder.AddLogerProviders();
 string connectionString = builder.Configuration.GetConnectionString("Database");
 
 builder.Services.AddDatabase(connectionString);
-builder.Services.AddRepository();
+builder.Services.AddMyServices();
+builder.Services.AddAreaServices();
 
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication("Cookies").AddCookie();
 builder.Services.AddAuthorization();
 
-
 #endregion Services
 
 var app = builder.Build();
 
+#region Midleware
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
+#endregion Midleware
 
 app.MapControllerRoute(name: "default",
     pattern: "{controller}/{action}",
