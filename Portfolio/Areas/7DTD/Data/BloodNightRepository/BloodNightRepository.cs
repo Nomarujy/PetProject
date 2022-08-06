@@ -6,7 +6,7 @@ namespace Portfolio.Areas._7DTD.Data.BloodNightRepository
     {
         private ServerTime _serverTime = null!;
         private Timer _timer = null!;
-        private readonly TimeSpan TimerPeriod = new TimeSpan(0, 10, 0);
+        private TimeSpan refreshPeriod;
 
         public BloodNightRepository() => InitServerTime(0, 0, 60);
 
@@ -18,14 +18,15 @@ namespace Portfolio.Areas._7DTD.Data.BloodNightRepository
         public void InitServerTime(int Day, int Hour, int MinsPerDay)
         {
             _serverTime = new(Day, Hour, MinsPerDay);
+            refreshPeriod = new TimeSpan(0, (int)_serverTime.MinutesPerHour, 0);
 
             _timer?.Dispose();
-            _timer = new Timer(new TimerCallback(Refresh), null, TimerPeriod, TimerPeriod);
+            _timer = new Timer(new TimerCallback(Refresh), null, refreshPeriod, refreshPeriod);
         }
 
         private void Refresh(object? alwaysNull)
         {
-            _serverTime.Update(TimerPeriod.Minutes);
+            _serverTime.Update(refreshPeriod.Minutes);
         }
 
     }

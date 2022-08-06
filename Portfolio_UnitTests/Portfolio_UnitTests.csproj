@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\7DTD\Service\**" />
+    <EmbeddedResource Remove="Areas\7DTD\Service\**" />
+    <None Remove="Areas\7DTD\Service\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -20,10 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio\Portfolio.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\7DTD\Service\" />
   </ItemGroup>
 
 </Project>

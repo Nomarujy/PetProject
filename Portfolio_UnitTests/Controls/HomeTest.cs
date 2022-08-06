@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Portfolio.Controls;
+﻿using Portfolio.Controls;
 using Portfolio.Data.Contact.Repository;
 using Portfolio.Models.Contact;
 using Portfolio_UnitTests.Mock;
@@ -69,6 +68,6 @@ namespace Portfolio_UnitTests.Controls
             Assert.True(res is RedirectResult);
             databaseMock.Verify(d => d.Add(contact));
         }
-        
+
     }
 }

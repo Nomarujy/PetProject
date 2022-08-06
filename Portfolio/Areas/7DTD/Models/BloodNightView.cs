@@ -4,27 +4,31 @@
     {
         public ServerTime ServerTime { get; private set; }
         public int BloodNightDay { get; private set; }
-        public TimeSpan TimeToBloodNight { get; private set; }
+        public TimeSpan TimeBeforeBloodNight { get; private set; }
 
         public BloodNightView(ServerTime ServerTime)
         {
             this.ServerTime = ServerTime;
+            TimeBeforeBloodNight = new();
 
-            int daysBeforeNight = 7 - ServerTime.Day % 7;
+            int dayOfWeek = ServerTime.Day % 7;
+            int daysLeft = dayOfWeek == 0 ? 0 : 7 - dayOfWeek;
 
-            BloodNightDay = ServerTime.Day + daysBeforeNight;
+            BloodNightDay = ServerTime.Day + daysLeft;
 
-            CalculateTimeToBloodNight(daysBeforeNight);
+            CalculateTimeToBloodNight(daysLeft);
         }
 
 
-        private void CalculateTimeToBloodNight(int daysBeforeNight)
+        private void CalculateTimeToBloodNight(int daysLeft)
         {
-            float currentDayTimePassed = ServerTime.Hour / 24f * ServerTime.MinutesPerDay;
+            int minsBeforeRedDay = daysLeft * ServerTime.MinutesPerDay;
+            TimeBeforeBloodNight = TimeBeforeBloodNight.Add(TimeSpan.FromMinutes(minsBeforeRedDay));
 
-            int minutesBeforeNightStart = ServerTime.MinutesPerDay * daysBeforeNight - (int)currentDayTimePassed;
+            int HoursLeft = 22 - ServerTime.Hour;
+            int minsBeforeNight = (int)(HoursLeft * ServerTime.MinutesPerHour);
 
-            TimeToBloodNight = new TimeSpan(minutesBeforeNightStart / 60, minutesBeforeNightStart % 60, 0);
+            TimeBeforeBloodNight = TimeBeforeBloodNight.Add(TimeSpan.FromMinutes(minsBeforeNight));
         }
     }
 }

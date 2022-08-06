@@ -1,7 +1,6 @@
 ﻿using Portfolio.Controls;
-using Microsoft.AspNetCore.Http;
-using Portfolio.Data.Account.Repository;
 using Portfolio.Data.Account.Encryptor;
+using Portfolio.Data.Account.Repository;
 using Portfolio.Models.Authorization;
 using Portfolio_UnitTests.Mock;
 
@@ -21,7 +20,7 @@ namespace Portfolio_UnitTests.Controls
             database = new();
             encryptor = new();
 
-            database.Setup(d => d.GetUserWithRole(LogForm.Email)).Returns(new User() { Password= LogForm.Password });
+            database.Setup(d => d.GetUserWithRole(LogForm.Email)).Returns(new User() { Password = LogForm.Password });
             encryptor.Setup(e => e.PasswordEqual(LogForm.Password, LogForm.Password)).Returns(false);
 
             controller = new(database.Object, encryptor.Object, logger.Object);
@@ -36,7 +35,7 @@ namespace Portfolio_UnitTests.Controls
 
             Assert.True(page is ViewResult);
         }
-        
+
         [Fact]
         public void RegisterReturnpage()
         {
@@ -44,7 +43,7 @@ namespace Portfolio_UnitTests.Controls
 
             Assert.True(page is ViewResult);
         }
-        
+
         [Fact]
         public void LoginReturnpage()
         {
