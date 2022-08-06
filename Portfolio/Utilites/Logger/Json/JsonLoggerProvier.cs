@@ -11,7 +11,7 @@ namespace Portfolio.Utilites.Logger.Json
             if (Directory.Exists(DirectoryPath) == false) Directory.CreateDirectory(DirectoryPath);
 
             DirectoryPath += $"{DateTime.UtcNow.ToString("d").Replace('.', '_')}.json";
-            writer = new(DirectoryPath, true, System.Text.Encoding.UTF8)
+            writer = new(DirectoryPath, true)
             {
                 AutoFlush = true
             };
