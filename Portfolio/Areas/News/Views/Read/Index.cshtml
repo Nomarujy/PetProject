@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ViewModel
+@{
 	ViewBag.Title = "Index";
 }
 
@@ -26,7 +27,7 @@
 										</div>
 										<div class="col-4 col-12-medium">
 											<section>
-												<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+												<a asp-area="News" asp-controller="Manage" asp-action="Create" class="image featured"><img src="/Areas/News/images/pic01.jpg" alt="" /></a>
 												<header class="second icon solid fa-user">
 													<h3>Doesn't need permissions</h3>
 													<p>Everyone can create post</p>
@@ -35,7 +36,7 @@
 										</div>
 										<div class="col-4 col-12-medium">
 											<section>
-												<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
+												<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="1" class="image featured"><img src="/Areas/News/images/pic02.jpg" alt="" /></a>
 												<header class="second icon solid fa-cog">
 													<h3>Post formatting</h3>
 													<p>You can design all your posts</p>
@@ -44,7 +45,7 @@
 										</div>
 										<div class="col-4 col-12-medium">
 											<section>
-												<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+												<a href="#" class="image featured"><img src="/Areas/News/images/pic03.jpg" alt="" /></a>
 												<header class="second icon solid fa-chart-bar">
 													<h3>Analitics</h3>
 													<p>Authomaticle analysis post trafic</p>
@@ -106,51 +107,23 @@
 								<div class="row">
 									<div class="col-8 col-12-medium">
 
-										<!-- Article list -->
+											<!-- Article list -->
 											<section class="box article-list">
 												<h2 class="icon fa-file-alt">Recent Posts</h2>
 
-												<!-- Excerpt -->
+												@foreach (var item in Model.RecentlyPosts)
+												{
 													<article class="box excerpt">
-														<a href="#" class="image left"><img src="images/pic04.jpg" alt="" /></a>
+														<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@item.Id" class="image left"><img src="/Areas/News/images/pic04.jpg" alt="" /></a>
 														<div>
 															<header>
-																<span class="date">July 24</span>
-																<h3><a href="#">Repairing a hyperspace window</a></h3>
+																<span class="date">@item.EditedTime.ToString("D")</span>
+																<h3><a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@item.Id">@item.Title</a></h3>
 															</header>
-															<p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus
-															semper mod quisturpis nisi consequat etiam lorem. Phasellus quam turpis,
-															feugiat et sit amet ornare in, hendrerit in lectus semper mod quis eget mi dolore.</p>
+															<p>@item.Content.Substring(0, @item.Content.Length > 100? 100 : @item.Content.Length)...</p>
 														</div>
 													</article>
-
-												<!-- Excerpt -->
-													<article class="box excerpt">
-														<a href="#" class="image left"><img src="images/pic05.jpg" alt="" /></a>
-														<div>
-															<header>
-																<span class="date">July 18</span>
-																<h3><a href="#">Adventuring with a knee injury</a></h3>
-															</header>
-															<p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus
-															semper mod quisturpis nisi consequat etiam lorem. Phasellus quam turpis,
-															feugiat et sit amet ornare in, hendrerit in lectus semper mod quis eget mi dolore.</p>
-														</div>
-													</article>
-
-												<!-- Excerpt -->
-													<article class="box excerpt">
-														<a href="#" class="image left"><img src="images/pic06.jpg" alt="" /></a>
-														<div>
-															<header>
-																<span class="date">July 14</span>
-																<h3><a href="#">Preparing for Y2K38</a></h3>
-															</header>
-															<p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus
-															semper mod quisturpis nisi consequat etiam lorem. Phasellus quam turpis,
-															feugiat et sit amet ornare in, hendrerit in lectus semper mod quis eget mi dolore.</p>
-														</div>
-													</article>
+												}
 
 											</section>
 									</div>
@@ -160,24 +133,21 @@
 											<section class="box spotlight">
 												<h2 class="icon fa-file-alt">Spotlight</h2>
 												<article>
-													<a href="#" class="image featured"><img src="images/pic07.jpg" alt=""></a>
+													<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight.Id" class="image featured"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
 													<header>
-														<h3><a href="#">Neural Implants</a></h3>
-														<p>The pros and cons. Mostly cons.</p>
+														<h3><a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight.Id">@Model.Spotlight.Title</a></h3>
+														<p>@Model.Spotlight.PubleshedTime.ToString("D")</p>
 													</header>
-													<p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus semper mod
-													quisturpis nisi consequat ornare in, hendrerit in lectus semper mod quis eget mi quat etiam
-													lorem. Phasellus quam turpis, feugiat sed et lorem ipsum dolor consequat dolor feugiat sed
-													et tempus consequat etiam.</p>
-													<p>Lorem ipsum dolor quam turpis, feugiat sit amet ornare in, hendrerit in lectus semper
-													mod quisturpis nisi consequat etiam lorem sed amet quam turpis.</p>
+													<p>@Model.Spotlight.Content.Substring(0, @Model.Spotlight.Content.Length > 100? 100 : @Model.Spotlight.Content.Length)...</p>
 													<footer>
-														<a href="#" class="button alt icon solid fa-file-alt">Continue Reading</a>
+														<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight.Id"
+														class="button alt icon solid fa-file-alt">Continue Reading</a>
 													</footer>
 												</article>
 											</section>
 
 									</div>
+										
 								</div>
 							</div>
 						</div>

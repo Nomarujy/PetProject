@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
+using Portfolio.Areas;
 using Portfolio.Data;
 using Portfolio.Utilites;
 
@@ -12,12 +13,12 @@ string connectionString = builder.Configuration.GetConnectionString("Database");
 
 builder.Services.AddDatabase(connectionString);
 builder.Services.AddRepository();
+builder.Services.AddAreaServices();
 
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication("Cookies").AddCookie();
 builder.Services.AddAuthorization();
-
 
 #endregion Services
 
@@ -28,18 +29,17 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
-app.MapControllerRoute(name: "default",
-    pattern: "{controller}/{action}",
-    new { controller = "Home", action = "Index" });
-
 app.MapAreaControllerRoute(name: "7DaysToDie", "7DTD",
-    pattern: "7DTD/{action}",
+    pattern: "7DTD/{controller}/{action}",
     new { controller = "BloodNight", Action = "Index" });
 
 app.MapAreaControllerRoute(name: "News", "News",
     pattern: "News/{controller}/{action}/{Id?}",
     new { controller = "Read", Action = "Index" },
     constraints: new { Id = new IntRouteConstraint() });
+
+app.MapControllerRoute(name: "default",
+    pattern: "{controller}/{action}",
+    new { controller = "Home", action = "Index" });
 
 app.Run();

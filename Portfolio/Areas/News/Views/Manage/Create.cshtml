@@ -1,0 +1,16 @@
+﻿@model PostForm
+
+@{
+    ViewBag.Title = "Create post";
+}
+
+<form method="post" style="margin:50px">
+        <input asp-for="Title" />
+        <br />
+        <textarea asp-for="Content"></textarea>
+        <br />
+        <label asp-for="IsPubleched"></label>
+        <input asp-for="IsPubleched" style="appearance:auto; -webkit-appearance:auto" />
+        <br />
+        <input type="submit" value="Send" />
+</form>

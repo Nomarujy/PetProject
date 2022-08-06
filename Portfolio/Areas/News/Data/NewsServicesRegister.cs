@@ -1,4 +1,4 @@
-﻿using Portfolio.Areas.News.Data.Post;
+﻿using Portfolio.Areas.News.Data.Post.Repository;
 
 namespace Portfolio.Areas.News.Data
 {
@@ -7,6 +7,7 @@ namespace Portfolio.Areas.News.Data
         public static void AddNewsServices(this IServiceCollection services)
         {
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddSingleton<ISpotlightService, SpotlightService>();
         }
     }
 }

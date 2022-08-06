@@ -5,8 +5,8 @@ namespace Portfolio.Areas._7DTD.Controls
 {
     public class BloodNightController : Controller
     {
-        private IBloodNightRepository repository;
-        private ILogger logger;
+        private readonly IBloodNightRepository repository;
+        private readonly ILogger logger;
 
         public BloodNightController(IBloodNightRepository bloodNightRepository, ILogger<BloodNightController> Logger)
         {
@@ -26,8 +26,8 @@ namespace Portfolio.Areas._7DTD.Controls
         {
             repository.InitServerTime(Day, Hour, MinsPerDay);
 
-            logger.LogInformation("Area: 7DTD. Обновлены значения BloodNightRepository");
-            return RedirectToAction("Index");
+            logger.LogInformation("Updated values");
+            return RedirectToAction("Index", "BloodNight", new { area = "7DTD" });
         }
     }
 }

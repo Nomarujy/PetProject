@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\News\Views\Manage\**" />
-    <Content Remove="Areas\News\Views\Manage\**" />
-    <EmbeddedResource Remove="Areas\News\Views\Manage\**" />
-    <None Remove="Areas\News\Views\Manage\**" />
+    <Compile Remove="Areas\7DTD\Views\Shared\**" />
+    <Content Remove="Areas\7DTD\Views\Shared\**" />
+    <EmbeddedResource Remove="Areas\7DTD\Views\Shared\**" />
+    <None Remove="Areas\7DTD\Views\Shared\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,12 +20,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\7DTD\Views\Shared\" />
-    <Folder Include="Areas\News\Data\" />
-    <Folder Include="Logs\" />
   </ItemGroup>
 
 </Project>

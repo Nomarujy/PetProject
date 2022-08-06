@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Portfolio.Data.Context;
 
@@ -11,9 +12,10 @@ using Portfolio.Data.Context;
 namespace Portfolio.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220805045315_Posts")]
+    partial class Posts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("AuthorEmail");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authorization.Group", b =>
@@ -68,7 +70,7 @@ namespace Portfolio.Migrations
 
                     b.HasKey("Name");
 
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authorization.Permision", b =>
@@ -95,7 +97,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Permisions", (string)null);
+                    b.ToTable("Permisions");
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authorization.Role", b =>
@@ -119,7 +121,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -163,7 +165,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Portfolio.Models.Contact.ContactModel", b =>
@@ -193,7 +195,7 @@ namespace Portfolio.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Id");
 
-                    b.ToTable("Contact", (string)null);
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("Portfolio.Areas.News.Models.Post.PostModel", b =>

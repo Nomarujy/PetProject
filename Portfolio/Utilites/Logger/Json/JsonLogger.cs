@@ -32,8 +32,7 @@ namespace Portfolio.Utilites.Logger.Json
                 LogLevel: logLevel.ToString(),
                 Category: category?.ToString(),
                 EventId: eventId.ToString(),
-                Message: formatter(state,
-                exception));
+                Message: formatter(state, exception));
 
             var json = JsonSerializer.Serialize(model);
 

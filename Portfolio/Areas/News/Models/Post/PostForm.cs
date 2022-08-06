@@ -1,6 +1,5 @@
 ﻿using Portfolio.Utilites.Extension;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 
 namespace Portfolio.Areas.News.Models.Post
 {
@@ -9,9 +8,8 @@ namespace Portfolio.Areas.News.Models.Post
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
-        public Image? MainImage { get; set; } = null;
 
-        public bool isPubleched { get; set; } = false;
+        public bool IsPubleched { get; set; } = false;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

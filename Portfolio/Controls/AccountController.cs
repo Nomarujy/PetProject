@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Data.Account.Encryptor;
 using Portfolio.Data.Account.Repository;
@@ -37,7 +38,7 @@ namespace Portfolio.Controls
             return View();
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public IActionResult Info()
         {
             var model = User.Identity;
@@ -82,7 +83,8 @@ namespace Portfolio.Controls
             var Principal = database.GetClaimPrincipals(user);
 
             return SignIn(Principal, new AuthenticationProperties()
-            { AllowRefresh = true, RedirectUri = returnUrl ?? "/" }); ;
+            { AllowRefresh = true, RedirectUri = returnUrl ?? "/" },
+            "Cookies"); ;
         }
     }
 }

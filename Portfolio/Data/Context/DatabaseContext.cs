@@ -32,7 +32,6 @@ namespace Portfolio.Data.Context
 
         #region News
         public DbSet<PostModel> Posts { get; set; } = null!;
-
         #endregion News
     }
 }
