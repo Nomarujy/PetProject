@@ -10,7 +10,7 @@ namespace Portfolio.Data
     {
         public static void AddDatabase(this IServiceCollection service, string ConnectionString)
         {
-            service.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(ConnectionString));
+            service.AddDbContext<DatabaseContext>(opt => opt.UseNpgsql(ConnectionString));
         }
 
         public static void AddRepository(this IServiceCollection service)

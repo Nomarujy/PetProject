@@ -6,8 +6,26 @@ namespace Portfolio.Areas.News.Models.Post
     public class PostForm : IValidatableObject
     {
         public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
+
+        private string _title = string.Empty;
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                _title = value.Replace("<", "&lt").Replace(">", "&gt");
+            }
+        }
+
+        private string _content = string.Empty;
+        public string Content
+        {
+            get { return _content; }
+            set
+            {
+                _content = value.Replace("<", "&lt").Replace(">", "&gt");
+            }
+        }
 
         public bool IsPubleched { get; set; } = false;
 

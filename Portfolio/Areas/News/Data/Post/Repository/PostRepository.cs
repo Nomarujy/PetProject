@@ -31,7 +31,7 @@ namespace Portfolio.Areas.News.Data.Post.Repository
 
         public IEnumerable<PostModel> RecentlyPosts(int count = 5)
         {
-            return database.Posts.OrderByDescending(c => c).Include(c => c.Author).Take(count).ToArray();
+            return database.Posts.OrderByDescending(c => c).Where(c=> c.IsDeleted == false && c.IsPubleched == true).Include(c => c.Author).Take(count).ToArray();
         }
 
         public void Update(PostModel post)

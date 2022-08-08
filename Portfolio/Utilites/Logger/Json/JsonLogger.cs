@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Utf8Json;
+﻿using Utf8Json;
 
 namespace Portfolio.Utilites.Logger.Json
 {
@@ -35,7 +34,7 @@ namespace Portfolio.Utilites.Logger.Json
                 EventId: eventId.ToString(),
                 Message: formatter(state, exception).ToString());
 
-            string json = Encoding.UTF8.GetString(JsonSerializer.Serialize(model));
+            string json = JsonSerializer.ToJsonString(model);
 
             lock (_lock)
             {

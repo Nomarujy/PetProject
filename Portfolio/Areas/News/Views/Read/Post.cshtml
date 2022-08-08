@@ -19,9 +19,9 @@
 											</header>
 
 											<span class="image featured"><img alt="" /></span>
-
 											
-											<vc:post content="@Model.CurrentPost.Content"/>
+											<vc:content-parser content="@Model.CurrentPost.Content"/>
+											
 										</article>
 								</div>
 							</div>
@@ -59,14 +59,14 @@
 										<section class="box spotlight">
 												<h2 class="icon fa-file-alt">Spotlight</h2>
 												<article>
-													<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight.Id" class="image featured"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
+													<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight?.Id" class="image featured"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
 													<header>
-														<h3><a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight.Id">@Model.Spotlight.Title</a></h3>
-														<p>@Model.Spotlight.PubleshedTime.ToString("D")</p>
+														<h3><a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight?.Id">@Model.Spotlight?.Title</a></h3>
+														<p>@Model.Spotlight?.PubleshedTime.ToString("D")</p>
 													</header>
-													<p>@Model.Spotlight.Content.Substring(0, @Model.Spotlight.Content.Length > 100? 100 : @Model.Spotlight.Content.Length)...</p>
+													<p>@Model.Spotlight?.Content.Substring(0, @Model.Spotlight.Content.Length > 100? 100 : @Model.Spotlight.Content.Length)...</p>
 													<footer>
-														<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight.Id"
+														<a asp-area="News" asp-controller="Read" asp-action="Post" asp-route-Id="@Model.Spotlight?.Id"
 														class="button alt icon solid fa-file-alt">Continue Reading</a>
 													</footer>
 												</article>
