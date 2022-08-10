@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Portfolio.Areas;
 using Portfolio.Data;
 using Portfolio.Utilites;
+using Portfolio.Areas.News.Data.Post.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +15,11 @@ string connectionString = builder.Configuration.GetConnectionString("Database");
 builder.Services.AddDatabase(connectionString);
 builder.Services.AddRepository();
 builder.Services.AddAreaServices();
-
+builder.Services.AddPostAuthorizationHandlers();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication("Cookies").AddCookie();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opt => { opt.AddPostPolitics(); });
 
 #endregion Services
 

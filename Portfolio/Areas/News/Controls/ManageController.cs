@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Portfolio.Areas.News.Data.Post.Repository;
 using Portfolio.Areas.News.Models.Post;
 using System.Security.Claims;
@@ -10,11 +11,13 @@ namespace Portfolio.Areas.News.Controls
     public class ManageController : Controller
     {
         private readonly IPostRepository database;
+        private readonly IAuthorizationService authorizationService;
         private readonly ILogger logger;
 
-        public ManageController(IPostRepository database, ILogger<ManageController> logger)
+        public ManageController(IPostRepository database, IAuthorizationService authorizationService, ILogger<ManageController> logger)
         {
             this.database = database;
+            this.authorizationService = authorizationService;
             this.logger = logger;
         }
 
@@ -25,13 +28,20 @@ namespace Portfolio.Areas.News.Controls
         }
 
         [HttpGet]
-        public ActionResult Edit(int Id)
+        public async Task<ActionResult> Edit(int Id)
         {
             var model = database.FindFirstPost(Id);
 
             if (model == null) return BadRequest("Новости не существует");
 
-            return View(model);
+            if (await UserHaveAccess(model))
+            {
+                return View(model);
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         [HttpPost]
@@ -56,7 +66,7 @@ namespace Portfolio.Areas.News.Controls
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PostForm form)
+        public async Task<ActionResult> Edit(PostForm form)
         {
             var postInDb = database.FindFirstPost(form.Id);
 
@@ -67,24 +77,48 @@ namespace Portfolio.Areas.News.Controls
             postInDb.IsPubleched = form.IsPubleched;
             postInDb.EditedTime = DateTime.UtcNow;
 
-            database.Update(postInDb);
-
-            return RedirectToAction("Post", "Read", new { area = "News", form.Id });
+            if (await UserHaveAccess(postInDb))
+            {
+                database.Update(postInDb);
+                return RedirectToAction("Post", "Read", new { area = "News", postInDb.Id });
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         [HttpPost]
-        public ActionResult Delete(int Id)
+        public async Task<ActionResult> Delete(int Id)
         {
             var postInDb = database.FindFirstPost(Id);
 
             if (postInDb == null) return BadRequest("Post not found");
-
-            // TO DO Check Access
-
             postInDb.IsDeleted = true;
-            database.Update(postInDb);
 
-            return View();
+            if (await UserHaveAccess(postInDb))
+            {
+                database.Update(postInDb);
+                return RedirectToAction("Index", "Read", new { area = "News" });
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        public async Task<bool> UserHaveAccess(PostModel Post)
+        {
+            var AuthRes = await authorizationService.AuthorizeAsync(User, Post, "PostPermision");
+
+            if (AuthRes.Succeeded)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
