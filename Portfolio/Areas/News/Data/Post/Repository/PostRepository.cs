@@ -15,29 +15,63 @@ namespace Portfolio.Areas.News.Data.Post.Repository
 
         public void Add(PostModel post)
         {
-            database.Posts.Add(post);
-            database.SaveChanges();
+            try
+            {
+                database.Posts.Add(post);
+                database.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public PostModel? FindFirstPost(int Id)
         {
-            return database.Posts.FirstOrDefault(p => p.Id == Id);
+            try
+            {
+                return database.Posts.FirstOrDefault(p => p.Id == Id);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public PostModel? GetPostWithAuthor(int Id)
         {
-            return database.Posts.Include(p => p.Author).FirstOrDefault(p => p.Id == Id);
+            try
+            {
+                return database.Posts.Include(p => p.Author).FirstOrDefault(p => p.Id == Id);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        public IEnumerable<PostModel> RecentlyPosts(int count = 5)
+        public IEnumerable<PostModel> GetRecentlyPosts(int count = 5)
         {
-            return database.Posts.OrderByDescending(c => c).Where(c=> c.IsDeleted == false && c.IsPubleched == true).Include(c => c.Author).Take(count).ToArray();
+            try
+            {
+                return database.Posts.OrderByDescending(c => c).Where(c => c.IsDeleted == false && c.IsPubleched == true).Include(c => c.Author).Take(count).ToArray();
+            }
+            catch (Exception)
+            {
+                return Array.Empty<PostModel>();
+            }
         }
 
         public void Update(PostModel post)
         {
-            database.Posts.Update(post);
-            database.SaveChanges();
+            try
+            {
+                database.Posts.Update(post);
+                database.SaveChanges();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

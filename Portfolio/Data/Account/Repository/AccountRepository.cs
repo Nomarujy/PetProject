@@ -16,23 +16,51 @@ namespace Portfolio.Data.Account.Repository
 
         public void AddUser(User user)
         {
-            database.Users.Add(user);
-            database.SaveChanges();
+            try
+            {
+                database.Users.Add(user);
+                database.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public User? GetUser(string Email)
         {
-            return database.Users.FirstOrDefault(u => u.Email == Email);
+            try
+            {
+                return database.Users.FirstOrDefault(u => u.Email == Email);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public User? GetUserWithRole(string Email)
         {
-            return database.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == Email);
+            try
+            {
+                return database.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == Email);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public Permision?[] GetPermisionse(int RoleId)
         {
-            return database.Permisions.Where(p => p.RoleId == RoleId).ToArray();
+            try
+            {
+                return database.Permisions.Where(p => p.RoleId == RoleId).ToArray();
+            }
+            catch (Exception)
+            {
+                return Array.Empty<Permision>();
+            }
         }
 
         public ClaimsPrincipal GetClaimPrincipals(User user)
@@ -47,13 +75,13 @@ namespace Portfolio.Data.Account.Repository
             };
 
             if (user.Role.GroupName != null)
-                Claims.Add(new Claim("Group", user.Role.GroupName!));
+                Claims.Add(new Claim("Group", user.Role.GroupName));
 
-            if (permisions != null)
+            foreach (var permision in permisions)
             {
-                foreach (var permision in permisions)
+                if (permision != null)
                 {
-                    Claims.Add(new Claim(permision!.Category, permision.GetCRUD()));
+                    Claims.Add(new Claim(permision.Category, permision.GetCRUD()));
                 }
             }
 

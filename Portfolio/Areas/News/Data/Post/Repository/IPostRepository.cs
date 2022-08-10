@@ -8,7 +8,7 @@ namespace Portfolio.Areas.News.Data.Post.Repository
         public PostModel? GetPostWithAuthor(int Id);
         public PostModel? FindFirstPost(int Id);
 
-        public IEnumerable<PostModel> RecentlyPosts(int count = 5);
+        public IEnumerable<PostModel> GetRecentlyPosts(int count = 5);
 
         public void Update(PostModel post);
     }

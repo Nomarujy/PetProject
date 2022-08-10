@@ -18,7 +18,7 @@ namespace Portfolio.Areas.News.Controls
         [HttpGet]
         public IActionResult Index()
         {
-            ViewModel model = CreateModel();
+            ViewModel model = CreateBaseModel();
             return View(model);
         }
 
@@ -30,19 +30,19 @@ namespace Portfolio.Areas.News.Controls
 
             if (Post.IsPubleched == false || Post.IsDeleted) return BadRequest("Post not publeshed"); //TO DO if Authorized(admin, author), return page
 
-            ViewModel model = CreateModel();
+            ViewModel model = CreateBaseModel();
             model.CurrentPost = Post;
 
             spotlight.PostRequested(Id);
             return View(model);
         }
 
-        private ViewModel CreateModel()
+        private ViewModel CreateBaseModel()
         {
             ViewModel model = new()
             {
-                RecentlyPosts = database.RecentlyPosts(),
-                Spotlight = database.FindFirstPost(spotlight.CurrentSpotlight)!
+                RecentlyPosts = database.GetRecentlyPosts(),
+                Spotlight = database.FindFirstPost(spotlight.CurrentSpotlight)
             };
 
             return model;
