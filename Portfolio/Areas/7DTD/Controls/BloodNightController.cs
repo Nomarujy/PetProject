@@ -3,6 +3,7 @@ using Portfolio.Areas._7DTD.Data.BloodNightRepository;
 
 namespace Portfolio.Areas._7DTD.Controls
 {
+    [Area("7DTD")]
     public class BloodNightController : Controller
     {
         private readonly IBloodNightRepository repository;

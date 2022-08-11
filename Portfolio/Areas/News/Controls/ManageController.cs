@@ -1,124 +1,94 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using Portfolio.Areas.News.Data.Post.Repository;
-using Portfolio.Areas.News.Models.Post;
+using Portfolio.Areas.News.Models.Entity;
+using Portfolio.Areas.News.Models.FormModel;
+using Portfolio.Areas.News.Services.Repository;
 using System.Security.Claims;
 
 namespace Portfolio.Areas.News.Controls
 {
-    [Authorize]
-    public class ManageController : Controller
-    {
-        private readonly IPostRepository database;
-        private readonly IAuthorizationService authorizationService;
-        private readonly ILogger logger;
+	[Authorize, Area("News")]
+	public class ManageController : Controller
+	{
+		private readonly IArticleRepository _database;
+		private readonly IAuthorizationService _authorization;
 
-        public ManageController(IPostRepository database, IAuthorizationService authorizationService, ILogger<ManageController> logger)
-        {
-            this.database = database;
-            this.authorizationService = authorizationService;
-            this.logger = logger;
-        }
+		public ManageController(IArticleRepository repository, IAuthorizationService authorization)
+		{
+			_database = repository;
+			_authorization = authorization;
+		}
 
-        [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
-        }
+		[HttpGet]
+		public IActionResult Create() => View();
 
         [HttpGet]
-        public async Task<ActionResult> Edit(int Id)
-        {
-            var model = database.FindFirstPost(Id);
-
-            if (model == null) return BadRequest("Новости не существует");
-
-            if (await UserHaveAccess(model))
-            {
-                return View(model);
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(PostForm form)
-        {
-            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-
-            if (ModelState.IsValid && email != null)
-            {
-                PostModel model = new(form, email)
-                {
-                    EditedTime = DateTime.UtcNow
-                };
-                database.Add(model);
-
-                logger.LogInformation("Created news by user {Email}", email);
-                return RedirectToAction("Index", "Read");
-            }
-            return BadRequest("Form not valid");
-        }
+        public async Task<IActionResult> Update(int Id)
+		{
+			Article? article = await _database.FindByIdAsync(Id);
+			if (article != null)
+			{
+				UpdateArticleForm model = new()
+				{
+					Id = article.Id,
+					Title = article.Title,
+					Description = article.Description,
+					Content = article.Content,
+					IsPubleshed = article.IsPubleshed
+				};
+				return View(model);
+			}
+			return NotFound();
+		}
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(PostForm form)
-        {
-            var postInDb = database.FindFirstPost(form.Id);
+        public async Task<IActionResult> Create(CreateArticleForm form)
+		{
+			if (ModelState.IsValid)
+			{
+				Article article = new()
+				{
+					AuthorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+					AuthorUserName = User.Identity?.Name!,
+					Title = form.Title,
+					Description = form.Description,
+					Content = form.Content,
+					IsPubleshed = form.IsPubleshed
+				};
 
-            if (postInDb == null) return BadRequest("Post not found");
+				await _database.AddArticleAsync(article);
+				return RedirectToAction("Index", "Read", new { area = "News" });
+			}
+			return View(form);
+		}
 
-            postInDb.Title = form.Title;
-            postInDb.Content = form.Content;
-            postInDb.IsPubleched = form.IsPubleched;
-            postInDb.EditedTime = DateTime.UtcNow;
+		[HttpPost]
+		public async Task<IActionResult> Update(UpdateArticleForm form)
+		{
+            if (ModelState.IsValid)
+			{
+                Article? article = await _database.FindByIdAsync(form.Id);
+				if (article == null) return NotFound();
 
-            if (await UserHaveAccess(postInDb))
-            {
-                database.Update(postInDb);
-                return RedirectToAction("Post", "Read", new { area = "News", postInDb.Id });
+				var result = await _authorization.AuthorizeAsync(User, article, "News_Update");
+
+				if (result.Succeeded)
+				{
+					article.Title = form.Title;
+					article.Description = form.Description;
+					article.Content = form.Content;
+					article.IsPubleshed = form.IsPubleshed;
+
+					await _database.UpdateArticleAsync(article);
+
+					return RedirectToAction("Article", "Read", new { area = "News", form.Id }); 
+				}
+				else
+				{
+                    return Forbid();
+                }
             }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Delete(int Id)
-        {
-            var postInDb = database.FindFirstPost(Id);
-
-            if (postInDb == null) return BadRequest("Post not found");
-            postInDb.IsDeleted = true;
-
-            if (await UserHaveAccess(postInDb))
-            {
-                database.Update(postInDb);
-                return RedirectToAction("Index", "Read", new { area = "News" });
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        public async Task<bool> UserHaveAccess(PostModel Post)
-        {
-            var AuthRes = await authorizationService.AuthorizeAsync(User, Post, "PostPermision");
-
-            if (AuthRes.Succeeded)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+			return View(form);
+		}
+	}
 }

@@ -1,6 +1,6 @@
-﻿@model CreateArticleForm
+﻿@model UpdateArticleForm
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Update";
     Layout = "";
 }
 <div asp-validation-summary="All"></div>
@@ -25,5 +25,5 @@
         <input asp-for="IsPubleshed" />
         <span asp-validation-for="IsPubleshed"></span>
     </div>
-    <input type="submit" value="Create"/>
+    <input type="submit" value="Create" />
 </form>

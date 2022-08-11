@@ -1,27 +1,15 @@
-using Microsoft.AspNetCore.Routing.Constraints;
-using Microsoft.EntityFrameworkCore;
-using Portfolio.Areas;
-using Portfolio.Data;
 using Portfolio.Utilites;
-using Portfolio.Areas.News.Data.Post.Authorization;
+using Portfolio;
 
 var builder = WebApplication.CreateBuilder(args);
-
-#region Services
 builder.AddLogerProviders();
 
-string connectionString = builder.Configuration.GetConnectionString("Database");
-
-builder.Services.AddDatabase(connectionString);
-builder.Services.AddRepository();
-builder.Services.AddAreaServices();
-builder.Services.AddPostAuthorizationHandlers();
-
 builder.Services.AddControllersWithViews();
-builder.Services.AddAuthentication("Cookies").AddCookie();
-builder.Services.AddAuthorization(opt => { opt.AddPostPolitics(); });
+// Startup
+builder.Services.AddDbAndAuthServices(builder.Configuration.GetConnectionString("PostgreSQL"));
+builder.Services.AddLocalServices();  
+builder.Services.AddAreaServices();
 
-#endregion Services
 
 var app = builder.Build();
 
@@ -30,14 +18,8 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapAreaControllerRoute(name: "7DaysToDie", "7DTD",
-    pattern: "7DTD/{controller}/{action}",
-    new { controller = "BloodNight", Action = "Index" });
-
-app.MapAreaControllerRoute(name: "News", "News",
-    pattern: "News/{controller}/{action}/{Id?}",
-    new { controller = "Read", Action = "Index" },
-    constraints: new { Id = new IntRouteConstraint() });
+app.MapControllerRoute(name: "Areas",
+    pattern:"{area}/{controller}/{action}");
 
 app.MapControllerRoute(name: "default",
     pattern: "{controller}/{action}",

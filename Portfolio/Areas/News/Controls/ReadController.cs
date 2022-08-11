@@ -1,51 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Areas.News.Data.Post.Repository;
-using Portfolio.Areas.News.Models.Post;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Portfolio.Areas.News.Models.Entity;
+using Portfolio.Areas.News.Models.ViewModel;
+using Portfolio.Areas.News.Services.Repository;
 
 namespace Portfolio.Areas.News.Controls
 {
-    public class ReadController : Controller
-    {
-        private readonly IPostRepository database;
-        private readonly ISpotlightService spotlight;
+	[Area("News")]
+	public class ReadController : Controller
+	{
+		private readonly IArticleRepository _database;
+		private readonly IAuthorizationService _authorizationService;
 
-        public ReadController(IPostRepository database, ISpotlightService spotlight)
-        {
-            this.database = database;
-            this.spotlight = spotlight;
-        }
+		public ReadController(IArticleRepository articleRepository, IAuthorizationService authorizationService)
+		{
+			_database = articleRepository;
+			_authorizationService = authorizationService;
+		}
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            ViewModel model = CreateBaseModel();
-            return View(model);
-        }
+		[HttpGet]
+		public async Task<IActionResult> Index() => View(await GetViewModel());
+
 
         [HttpGet]
-        public IActionResult Post(int Id)
-        {
-            var Post = database.GetPostWithAuthor(Id);
-            if (Post == null) return BadRequest("Post not found");
-
-            if (Post.IsPubleched == false || Post.IsDeleted) return BadRequest("Post not publeshed"); //TO DO if Authorized(admin, author), return page
-
-            ViewModel model = CreateBaseModel();
-            model.CurrentPost = Post;
-
-            spotlight.PostRequested(Id);
-            return View(model);
+        public async Task<IActionResult> Article(int Id)
+		{
+			var article = await _database.FindByIdAsync(Id);
+			if (article != null)
+			{
+				var result = await _authorizationService.AuthorizeAsync(User, article, "News_Read");
+				if (result.Succeeded)
+				{
+                    return View(await GetViewModel(article));
+                }
+				else
+				{
+					return Forbid();
+				}
+            }
+            return NotFound();
         }
 
-        private ViewModel CreateBaseModel()
-        {
-            ViewModel model = new()
-            {
-                RecentlyPosts = database.GetRecentlyPosts(),
-                Spotlight = database.FindFirstPost(spotlight.CurrentSpotlight)
-            };
-
-            return model;
-        }
-    }
+        private async Task<NewsViewModel> GetViewModel(Article? article = null)
+		{
+			var recentlyPost = await _database.GetRecentlyAsync(5);
+			Article? spotlight = null;
+			return new NewsViewModel(recentlyPost, spotlight, article);
+		}
+	}
 }

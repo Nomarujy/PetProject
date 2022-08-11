@@ -1,0 +1,15 @@
+﻿@using System.Security.Claims
+@model IEnumerable<Claim>
+@{
+    ViewData["Title"] = "Info";
+}
+
+@foreach (var item in Model)
+{
+    <div>
+        @item.Type
+        -
+        @item.Value
+    </div>
+}
+

@@ -1,90 +1,63 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data.Account.Encryptor;
-using Portfolio.Data.Account.Repository;
-using Portfolio.Models.Authorization;
+using Portfolio.Models.Authentication.FormModel;
+using Portfolio.Models.Authentication.Entity;
 
 namespace Portfolio.Controls
 {
     public class AccountController : Controller
     {
-        private readonly IAccountRepository database;
-        private readonly ILogger logger;
-        private readonly IPasswordEncryptor encryptor;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(IAccountRepository database, IPasswordEncryptor encryptor, ILogger<AccountController> logger)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            this.database = database;
-            this.encryptor = encryptor;
-            this.logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Login() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterForm form)
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpGet, Authorize(Roles = "Admin")]
-        public IActionResult Info()
-        {
-            var model = User.Identity;
-            return View(model);
-        }
-
-        public IActionResult Logout()
-        {
-            return SignOut(new AuthenticationProperties() { RedirectUri = "/" }, "Cookies");
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterForm userForm)
-        {
-            if (ModelState.IsValid == false) return BadRequest(ModelState.Values);
-
-            User user = new(userForm, encryptor);
-
-            database.AddUser(user);
-
-            logger.LogInformation("Registered new user {user} by IP: {IP}",
-                user.Email, HttpContext.Connection.RemoteIpAddress);
-
-
-            return Redirect("/");
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Login(LoginForm userForm, string? returnUrl)
-        {
-            User? user = database.GetUserWithRole(userForm.Email);
-
-            if (user == null) return BadRequest("UserNotFound");
-
-            if (false == encryptor.PasswordEqual(userForm.Password, user.Password))
+            if (ModelState.IsValid)
             {
-                logger.LogInformation("Failed login atempt in {user} by IP: {IP}",
-                    user.Email, HttpContext.Connection.RemoteIpAddress);
-                return BadRequest();
+                User user = new() { Email = form.Email, UserName = form.UserName };
+                var result = await _userManager.CreateAsync(user, form.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home", new { area = "" });
+                }
+
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
             }
+            return View(form);
+        }
 
-            var Principal = database.GetClaimPrincipals(user);
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginForm form)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await _signInManager.PasswordSignInAsync(form.UserName, form.Password, form.RememberMe, false);
 
-            return SignIn(Principal, new AuthenticationProperties()
-            { AllowRefresh = true, RedirectUri = returnUrl ?? "/" },
-            "Cookies"); ;
+                if (res.Succeeded)
+                {
+                    return LocalRedirect(form.ReturnUrl);
+                }
+
+            }
+            return View(form);
         }
     }
 }
