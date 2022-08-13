@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Article>
 @{
-    ViewBag.Title = $"{User.Identity?.Name} articles";
+    ViewBag.Title = "Hystory";
 }
 
-<h1>@ViewBag.Title</h1>
+<h1>Hystory</h1>
 
 <table>
     <tr>
@@ -17,7 +17,8 @@
             <td>@item.Title</td>
             <td>@item.IsPubleshed</td>
             <td>@item.Description</td>
-            <td><a asp-action="Update" asp-route-Id="@item.Id">Edit</a></td>
+            <td><a asp-action="Article" asp-controller="Analitics" asp-route-Id="@item.Id">Analitics</a></td>
+            <td><a asp-action="Update" asp-controller="manage" asp-route-Id="@item.Id">Edit</a></td>
         </tr>
     }
 </table>

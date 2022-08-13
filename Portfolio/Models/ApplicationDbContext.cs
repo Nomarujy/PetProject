@@ -18,6 +18,7 @@ namespace Portfolio.Models
 
         #region News
         public DbSet<Article> Articles { get; set; } = null!;
+        public DbSet<ArticleViewers> ArticleViewers { get; set; } = null!;
 
 
         #endregion News

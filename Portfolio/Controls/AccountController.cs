@@ -28,7 +28,7 @@ namespace Portfolio.Controls
             return Redirect("/");
         }
 
-        [HttpPost]
+        [HttpPost, AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Register(RegisterForm form)
         {
             if (ModelState.IsValid)
@@ -50,7 +50,7 @@ namespace Portfolio.Controls
             return View(form);
         }
 
-        [HttpPost]
+        [HttpPost, AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Login(LoginForm form)
         {
             if (ModelState.IsValid)

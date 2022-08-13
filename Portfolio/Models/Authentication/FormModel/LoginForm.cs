@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models.Authentication.FormModel
@@ -18,7 +17,7 @@ namespace Portfolio.Models.Authentication.FormModel
         [Display(Name = "Запомнить?")]
         public bool RememberMe { get; set; } = false;
 
-        [ValidateNever, FromQuery]
+        [ValidateNever]
         public string ReturnUrl { get; set; } = null!;
     }
 }

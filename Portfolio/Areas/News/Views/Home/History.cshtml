@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ArticleViewers>
+@{
+    ViewBag.Title = "History";
+}
+
+<h1>Your history</h1>
+
+<table>
+    <tr>
+        <td>View time</td>
+        <td>Title</td>
+        <td>Description</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ViewTime.ToString("g")</td>
+            <td><a asp-action="Article" asp-route-Id="@item.ArticleId">@item.Article.Title</a></td>
+            <td>@item.Article.Description</td>
+        </tr>
+    }
+</table>

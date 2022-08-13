@@ -5,7 +5,7 @@
 
 <div asp-validation-summary="All"></div>
 
-<form method="post">
+<form method="post" asp-antiforgery="true">
     <div>
         <label asp-for="UserName"></label>
         <input asp-for="UserName" />

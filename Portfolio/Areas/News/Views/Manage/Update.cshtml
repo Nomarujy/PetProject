@@ -1,10 +1,11 @@
 ﻿@model UpdateArticleForm
 @{
     ViewBag.Title = "Update";
-    Layout = "";
 }
+
 <div asp-validation-summary="All"></div>
-<form method="post">
+
+<form method="post" asp-antiforgery="true">
     <div>
         <label asp-for="Title"></label>
         <input asp-for="Title" />
