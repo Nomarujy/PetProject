@@ -1,7 +1,7 @@
-﻿using Portfolio.Models.Authentication.Entity;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Portfolio.Models.Authentication.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Areas.News.Models.Entity
 {
@@ -10,9 +10,11 @@ namespace Portfolio.Areas.News.Models.Entity
         public void Configure(EntityTypeBuilder<Article> builder)
         {
             builder.HasKey(p => p.Id).HasName("PK_Id");
+            builder.HasIndex(p => p.Id);
+            builder.HasIndex(p => p.AuthorId);
             builder.HasOne(p => p.Author).WithMany()
                 .HasForeignKey(p => p.AuthorId)
-                .HasPrincipalKey(u=> u.Id)
+                .HasPrincipalKey(u => u.Id)
                 .HasConstraintName("FK_AuthorId");
         }
     }

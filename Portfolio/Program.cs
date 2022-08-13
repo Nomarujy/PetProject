@@ -1,15 +1,8 @@
-using Portfolio.Utilites;
 using Portfolio;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.AddLogerProviders();
 
-builder.Services.AddControllersWithViews();
-// Startup
-builder.Services.AddDbAndAuthServices(builder.Configuration.GetConnectionString("PostgreSQL"));
-builder.Services.AddLocalServices();  
-builder.Services.AddAreaServices();
-
+builder.Configure();
 
 var app = builder.Build();
 
@@ -19,7 +12,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(name: "Areas",
-    pattern:"{area}/{controller}/{action}");
+    pattern: "{area}/{controller}/{action}",
+    new { controller = "Home", action = "Index" });
 
 app.MapControllerRoute(name: "default",
     pattern: "{controller}/{action}",

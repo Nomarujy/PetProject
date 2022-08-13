@@ -22,8 +22,16 @@ namespace Portfolio.Areas.News.Controls
 		[HttpGet]
 		public IActionResult Create() => View();
 
-        [HttpGet]
-        public async Task<IActionResult> Update(int Id)
+		[HttpGet]
+		public async Task<IActionResult> MyArticles()
+		{
+			string authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var model = await _database.GetArticlesByAuthorIdAsync(authorId);
+			return View(model);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Update(int Id)
 		{
 			Article? article = await _database.FindByIdAsync(Id);
 			if (article != null)
@@ -41,8 +49,8 @@ namespace Portfolio.Areas.News.Controls
 			return NotFound();
 		}
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateArticleForm form)
+		[HttpPost]
+		public async Task<IActionResult> Create(CreateArticleForm form)
 		{
 			if (ModelState.IsValid)
 			{
@@ -53,7 +61,8 @@ namespace Portfolio.Areas.News.Controls
 					Title = form.Title,
 					Description = form.Description,
 					Content = form.Content,
-					IsPubleshed = form.IsPubleshed
+					IsPubleshed = form.IsPubleshed,
+					DateOfPublishing = DateTime.UtcNow,
 				};
 
 				await _database.AddArticleAsync(article);
@@ -65,9 +74,9 @@ namespace Portfolio.Areas.News.Controls
 		[HttpPost]
 		public async Task<IActionResult> Update(UpdateArticleForm form)
 		{
-            if (ModelState.IsValid)
+			if (ModelState.IsValid)
 			{
-                Article? article = await _database.FindByIdAsync(form.Id);
+				Article? article = await _database.FindByIdAsync(form.Id);
 				if (article == null) return NotFound();
 
 				var result = await _authorization.AuthorizeAsync(User, article, "News_Update");
@@ -78,16 +87,17 @@ namespace Portfolio.Areas.News.Controls
 					article.Description = form.Description;
 					article.Content = form.Content;
 					article.IsPubleshed = form.IsPubleshed;
+					if (form.IsPubleshed) article.DateOfPublishing = DateTime.UtcNow;
 
 					await _database.UpdateArticleAsync(article);
 
-					return RedirectToAction("Article", "Read", new { area = "News", form.Id }); 
+					return RedirectToAction("Article", "Read", new { area = "News", form.Id });
 				}
 				else
 				{
-                    return Forbid();
-                }
-            }
+					return Forbid();
+				}
+			}
 			return View(form);
 		}
 	}

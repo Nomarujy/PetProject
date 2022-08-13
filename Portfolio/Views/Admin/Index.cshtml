@@ -3,7 +3,7 @@
     ViewBag.Title = "Список пользователей";
 }
 
-<a asp-action="Create" asp-controller="Admin">Добавить пользователя</a>
+<a asp-action="Create" asp-controller="Account">Добавить пользователя</a>
 
 <table class="table">
     <tr><th>Email</th><th>UserName</th><th></th></tr>
@@ -11,10 +11,10 @@
     {
         <tr>
             <td>@user.Email</td>
+            <td>@user.EmailConfirmed</td>
             <td>@user.UserName</td>
             <td>
                 <form asp-action="Delete" asp-controller="Admin" asp-route-id="@user.Id" method="post">
-                    <a asp-action="Edit" asp-controller="Admin" asp-route-id="@user.Id">Изменить</a>
                     <button type="submit">
                         Удалить
                     </button>

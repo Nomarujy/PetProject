@@ -1,6 +1,6 @@
 ﻿using Portfolio.Areas._7DTD.Models;
 
-namespace Portfolio.Areas._7DTD.Data.BloodNightRepository
+namespace Portfolio.Areas._7DTD.Services.Repository
 {
     public interface IBloodNightRepository
     {

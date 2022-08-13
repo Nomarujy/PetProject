@@ -2,8 +2,8 @@
 
 namespace Portfolio.Areas.News.Models.FormModel
 {
-	public class CreateArticleForm
-	{
+    public class CreateArticleForm
+    {
         private string _title = string.Empty;
         private string _description = string.Empty;
         private string _content = string.Empty;

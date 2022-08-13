@@ -7,6 +7,7 @@ namespace Portfolio.Areas.News.Services.Repository
         Task AddArticleAsync(Article model);
         Task<Article?> FindByIdAsync(int Id);
         Task<IEnumerable<Article>> GetRecentlyAsync(int count);
+        Task<IEnumerable<Article>> GetArticlesByAuthorIdAsync(string authorId);
         Task UpdateArticleAsync(Article article);
     }
 }

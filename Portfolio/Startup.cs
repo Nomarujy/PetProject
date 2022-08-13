@@ -1,38 +1,47 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.Areas._7DTD.Data.BloodNightRepository;
-using Portfolio.Models.Authentication.Entity;
-using Portfolio.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Portfolio.Areas._7DTD.Services;
 using Portfolio.Areas.News.Services.Authorization;
-using Portfolio.Areas.News.Services.Repository;
+using Portfolio.Models;
+using Portfolio.Models.Authentication.Entity;
+using Portfolio.Utilites;
 
 namespace Portfolio
 {
     public static class Startup
     {
-        public static void AddDbAndAuthServices(this IServiceCollection services, string connectionString)
+        public static void Configure(this WebApplicationBuilder builder)
         {
-            services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString));
+            builder.AddLogerProviders();
+            builder.Services.AddControllersWithViews();
 
-            services.AddAuthentication("Cookies").AddCookie();
-            services.AddAuthorization(opt=>
-            {
-                opt.AddArticlePolitics();
-            });
-            services.AddIdentity<User, Role>(opt => opt.Password.RequireNonAlphanumeric = false).AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+            opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
+            opt => opt.EnableRetryOnFailure()));
 
-            //Handlers
-            services.AddArticleHandlers();
+            builder.Services.AddAuthentication("Cookies").AddCookie();
+            builder.Services.AddAuthorization(opt => opt.AddPolitics());
+            builder.Services.AddIdentity<User, Role>(opt => opt.Password.RequireNonAlphanumeric = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            builder.Services.AddPoliticsHandlers();
+
+            builder.Services.AddServices();
         }
 
-        public static void AddLocalServices(this IServiceCollection service)
+        private static void AddPolitics(this AuthorizationOptions opt)
         {
+            opt.AddArticlePolitics();
         }
 
-        public static void AddAreaServices(this IServiceCollection services)
+        private static void AddPoliticsHandlers(this IServiceCollection service)
         {
-            services.AddSingleton<IBloodNightRepository, BloodNightRepository>();
-            services.AddScoped<IArticleRepository, ArticleRepository>();
+            service.AddArticleHandlers();
+        }
+
+        public static void AddServices(this IServiceCollection service)
+        {
+            service.Add7DtdServices();
         }
 
     }

@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models.Authentication.FormModel
 {
@@ -7,16 +8,17 @@ namespace Portfolio.Models.Authentication.FormModel
     {
         [Required]
         [Display(Name = "Имя пользователя")]
-        public string UserName { get; set; } = string.Empty;
+        public string UserName { get; set; } = null!;
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
-        public string Password { get; set; } = string.Empty;
+        public string Password { get; set; } = null!;
 
         [Display(Name = "Запомнить?")]
         public bool RememberMe { get; set; } = false;
 
-        public string ReturnUrl { get; set; } = "/";
+        [ValidateNever, FromQuery]
+        public string ReturnUrl { get; set; } = null!;
     }
 }

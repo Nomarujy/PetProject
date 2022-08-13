@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Article>
+@{
+    ViewBag.Title = $"{User.Identity?.Name} articles";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<table>
+    <tr>
+        <td>Title</td>
+        <td>Publeshed</td>
+        <td>Description</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.IsPubleshed</td>
+            <td>@item.Description</td>
+            <td><a asp-action="Update" asp-route-Id="@item.Id">Edit</a></td>
+        </tr>
+    }
+</table>

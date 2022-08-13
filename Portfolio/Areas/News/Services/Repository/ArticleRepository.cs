@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.Areas.News.Models.Entity;
-using Portfolio.Areas.News.Models.FormModel;
 using Portfolio.Models;
 
 namespace Portfolio.Areas.News.Services.Repository
@@ -16,14 +15,7 @@ namespace Portfolio.Areas.News.Services.Repository
 
         public async Task<Article?> FindByIdAsync(int Id)
         {
-            try
-            {
-                return await _database.Articles.FirstOrDefaultAsync(a => a.Id == Id);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return await _database.Articles.FirstOrDefaultAsync(a => a.Id == Id);
         }
 
         public async Task<IEnumerable<Article>> GetRecentlyAsync(int count)
@@ -33,28 +25,19 @@ namespace Portfolio.Areas.News.Services.Repository
 
         public async Task AddArticleAsync(Article model)
         {
-            try
-            {
-                await _database.Articles.AddAsync(model);
-                await _database.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-
-            }
+            _database.Articles.Add(model);
+            await _database.SaveChangesAsync();
         }
 
         public async Task UpdateArticleAsync(Article article)
         {
-            try
-            {
-                _database.Articles.Update(article);
-                await _database.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
+            _database.Articles.Update(article);
+            await _database.SaveChangesAsync();
+        }
 
-            }
+        public async Task<IEnumerable<Article>> GetArticlesByAuthorIdAsync(string authorId)
+        {
+            return await _database.Articles.Where(a => a.AuthorId == authorId).ToArrayAsync();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Models.Authentication.FormModel;
 using Portfolio.Models.Authentication.Entity;
+using Portfolio.Models.Authentication.FormModel;
 
 namespace Portfolio.Controls
 {
@@ -21,6 +21,12 @@ namespace Portfolio.Controls
 
         [HttpGet]
         public IActionResult Login() => View();
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
+        }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterForm form)
@@ -49,11 +55,11 @@ namespace Portfolio.Controls
         {
             if (ModelState.IsValid)
             {
-                var res = await _signInManager.PasswordSignInAsync(form.UserName, form.Password, form.RememberMe, false);
+                var res = await _signInManager.PasswordSignInAsync(form.UserName, form.Password, form.RememberMe, true);
 
                 if (res.Succeeded)
                 {
-                    return LocalRedirect(form.ReturnUrl);
+                    return LocalRedirect(form.ReturnUrl ?? "/");
                 }
 
             }

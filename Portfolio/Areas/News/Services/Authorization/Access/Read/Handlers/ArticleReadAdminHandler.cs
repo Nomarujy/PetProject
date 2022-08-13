@@ -9,7 +9,7 @@ namespace Portfolio.Areas.News.Services.Authorization.Access.Read
         {
             var readClaim = NewsClaim.Read;
 
-            if (context.User.HasClaim(c=> c.Equals(readClaim)))
+            if (context.User.HasClaim(c => c.Equals(readClaim)))
             {
                 context.Succeed(requirement);
             }

@@ -1,15 +1,18 @@
-﻿@using System.Security.Claims
-@model IEnumerable<Claim>
+﻿@model IEnumerable<System.Security.Claims.Claim>
 @{
-    ViewData["Title"] = "Info";
+    ViewBag.Title = "Info";
 }
-
-@foreach (var item in Model)
-{
-    <div>
-        @item.Type
-        -
-        @item.Value
-    </div>
-}
+<table>
+    <tr>
+        <td>Type</td>
+        <td>Value</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Type</td>
+            <td>@item.Value</td>
+        </tr>
+    }
+</table>
 

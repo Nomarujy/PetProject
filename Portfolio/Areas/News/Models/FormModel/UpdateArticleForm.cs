@@ -2,7 +2,7 @@
 
 namespace Portfolio.Areas.News.Models.FormModel
 {
-	public class UpdateArticleForm
+    public class UpdateArticleForm
     {
         public int Id { get; set; }
 
