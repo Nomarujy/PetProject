@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Models.Authentication.Entity;
 using Portfolio.Models.Authentication.FormModel;
+using System.Security.Claims;
 
 namespace Portfolio.Controls
 {
@@ -14,6 +16,18 @@ namespace Portfolio.Controls
         {
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+
+        [HttpGet, Authorize]
+        public async Task<IActionResult> Index()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Login");
+            }
+            return View(user);
         }
 
         [HttpGet]
