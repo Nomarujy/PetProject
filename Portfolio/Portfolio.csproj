@@ -33,10 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Areas\News\Component\ContentParserViewComponent.cs" />
   </ItemGroup>
 

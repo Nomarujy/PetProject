@@ -174,7 +174,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Areas.News.Models.Entity.ArticleViewers", b =>
@@ -201,7 +201,7 @@ namespace Portfolio.Migrations
 
                     b.HasIndex("ViewerId");
 
-                    b.ToTable("ArticleViewers");
+                    b.ToTable("ArticleViewers", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Models.Authentication.Entity.Role", b =>

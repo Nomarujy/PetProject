@@ -15,7 +15,7 @@ namespace Portfolio
             builder.AddLogerProviders();
             builder.Services.AddControllersWithViews();
 
-            InitDB(builder.Services);
+            builder.Services.AddDbContext<ApplicationDbContext>();
 
             builder.Services.AddAuthentication("Cookies").AddCookie();
             builder.Services.AddAuthorization(opt => opt.AddPolitics());
@@ -25,20 +25,6 @@ namespace Portfolio
             builder.Services.AddPoliticsHandlers();
 
             builder.Services.AddServices();
-        }
-
-        private static void InitDB(IServiceCollection services)
-        {
-            string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
-            string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
-            string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
-            string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "postgres";
-
-            string connectionString = $"Host={host};Username={username};Password={password};Database={database}";
-
-            services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(connectionString,
-            opt => opt.EnableRetryOnFailure()));
         }
 
         private static void AddPolitics(this AuthorizationOptions opt)
