@@ -7,7 +7,10 @@ builder.Configure();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = "/static"
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
