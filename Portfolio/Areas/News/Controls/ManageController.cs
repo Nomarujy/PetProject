@@ -58,7 +58,7 @@ namespace Portfolio.Areas.News.Controls
                 };
 
                 await _database.AddArticleAsync(article);
-                return RedirectToAction("Index", "Read", new { area = "News" });
+                return RedirectToAction(nameof(MyArticles));
             }
             return View(form);
         }
@@ -83,7 +83,7 @@ namespace Portfolio.Areas.News.Controls
 
                     await _database.UpdateArticleAsync(article);
 
-                    return RedirectToAction("Article", "Read", new { area = "News", form.Id });
+                    return RedirectToAction(nameof(MyArticles));
                 }
                 else
                 {

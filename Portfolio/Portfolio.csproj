@@ -7,6 +7,7 @@
     <SignAssembly>False</SignAssembly>
     <UserSecretsId>882685b9-5226-4779-a9a0-9029256b6f63</UserSecretsId>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
@@ -26,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
     <PackageReference Include="Utf8Json" Version="1.3.7" />
   </ItemGroup>
@@ -37,5 +39,7 @@
   <ItemGroup>
     <Content Include="Areas\News\Component\ContentParserViewComponent.cs" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

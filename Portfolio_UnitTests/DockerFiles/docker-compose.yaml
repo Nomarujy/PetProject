@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  app: 
+    image: nomarujy/portfolio:0.8
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - applogs:/app/Logs
+    environment:
+      POSTGRES_HOST: psql
+      POSTGRES_DATABASE: Production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  psql:
+    image: postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+
+volumes:
+  applogs:
+  db:
