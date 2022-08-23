@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portfolio.Areas._7DTD.Models;
 using Portfolio.Areas._7DTD.Services.Repository;
 
 namespace Portfolio.Areas._7DTD.Controls
@@ -23,12 +24,18 @@ namespace Portfolio.Areas._7DTD.Controls
         }
 
         [HttpPost]
-        public IActionResult Update(int Day, int Hour, int MinsPerDay)
+        public IActionResult Update(InputForm form)
         {
-            repository.InitServerTime(Day, Hour, MinsPerDay);
+            if (ModelState.IsValid)
+            {
+                repository.InitServerTime(form.Day, form.Hour, form.MinsPerDay);
 
-            logger.LogInformation("Updated values");
-            return RedirectToAction("Index", "BloodNight", new { area = "7DTD" });
+                logger.LogInformation("Updated servertime Day:{D}, Hour:{H}, MinsPerDay:{MPD}", form.Day, form.Hour, form.MinsPerDay);
+
+                return RedirectToAction("Index", "BloodNight", new { area = "7DTD" });
+            }
+
+            return BadRequest();
         }
     }
 }

@@ -3,32 +3,70 @@
     public class BloodNightView
     {
         public ServerTime ServerTime { get; private set; }
-        public int BloodNightDay { get; private set; }
-        public TimeSpan TimeBeforeBloodNight { get; private set; }
+
+
+        public int BloodNightDay { get; set; }
+
+        public TimeSpan TimeLeft { get; set; }
+        public DateTime StartTime { get; set; }
+
+        public int DayOfWeek { get; set; }
+        public int Percentage { get; set; }
 
         public BloodNightView(ServerTime ServerTime)
         {
             this.ServerTime = ServerTime;
-            TimeBeforeBloodNight = new();
 
-            int dayOfWeek = ServerTime.Day % 7;
-            int daysLeft = dayOfWeek == 0 ? 0 : 7 - dayOfWeek;
+            int dayPased = ServerTime.Day % 7;
+            DayOfWeek = dayPased == 0 ? 7 : dayPased;
+            BloodNightDay = ServerTime.Day + 7 - dayPased;
 
-            BloodNightDay = ServerTime.Day + daysLeft;
+            TimeLeft = FindTimeBeforeBloodNight();
+            StartTime = DateTime.Now.Add(TimeLeft);
 
-            CalculateTimeToBloodNight(daysLeft);
+            Percentage = FindPercentage();
         }
 
 
-        private void CalculateTimeToBloodNight(int daysLeft)
+        private int FindMinsBeforeSunday()
         {
-            int minsBeforeRedDay = daysLeft * ServerTime.MinutesPerDay;
-            TimeBeforeBloodNight = TimeBeforeBloodNight.Add(TimeSpan.FromMinutes(minsBeforeRedDay));
+            int daysLeft = 7 - (BloodNightDay - ServerTime.Day);
 
-            int HoursLeft = 22 - ServerTime.Hour;
-            int minsBeforeNight = (int)(HoursLeft * ServerTime.MinutesPerHour);
+            return daysLeft * ServerTime.MinutesPerDay;
+        }
 
-            TimeBeforeBloodNight = TimeBeforeBloodNight.Add(TimeSpan.FromMinutes(minsBeforeNight));
+        private int FindMinsBeforeNight()
+        {
+            int hoursLeft = 22 - ServerTime.Hour;
+
+            return (int)(hoursLeft * ServerTime.MinutesPerHour);
+        }
+
+        private TimeSpan FindTimeBeforeBloodNight()
+        {
+            int minutesLeft = FindMinsBeforeSunday() + FindMinsBeforeNight();
+
+            return TimeSpan.FromMinutes(minutesLeft);
+        }
+
+        // Only after FindTimeBeforeBloodNight
+        private int FindPercentage()
+        {
+            const float percentPerDay = 1f / 7f;
+
+            int daysPased = DayOfWeek - 1;
+            float percent = daysPased * percentPerDay;
+
+            if (ServerTime.Hour >= 22)
+            {
+                percent += percentPerDay;
+            }
+            else
+            {
+                percent += ServerTime.Hour / 22f * percentPerDay;
+            }
+
+            return (int)(percent * 100);
         }
     }
 }

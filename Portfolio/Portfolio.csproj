@@ -16,9 +16,13 @@
 
   <ItemGroup>
     <Compile Remove="Areas\7DTD\Views\Shared\**" />
+    <Compile Remove="wwwroot\Areas\7DTD\Index\**" />
     <Content Remove="Areas\7DTD\Views\Shared\**" />
+    <Content Remove="wwwroot\Areas\7DTD\Index\**" />
     <EmbeddedResource Remove="Areas\7DTD\Views\Shared\**" />
+    <EmbeddedResource Remove="wwwroot\Areas\7DTD\Index\**" />
     <None Remove="Areas\7DTD\Views\Shared\**" />
+    <None Remove="wwwroot\Areas\7DTD\Index\**" />
   </ItemGroup>
 
   <ItemGroup>
