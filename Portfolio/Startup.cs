@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Portfolio.Areas._7DTD.Services;
 using Portfolio.Areas.News.Services.Authorization;
 using Portfolio.Models;

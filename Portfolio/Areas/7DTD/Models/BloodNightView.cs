@@ -19,7 +19,7 @@
 
             int dayPased = ServerTime.Day % 7;
             DayOfWeek = dayPased == 0 ? 7 : dayPased;
-            BloodNightDay = ServerTime.Day + 7 - dayPased;
+            BloodNightDay = DayOfWeek == 7 ? ServerTime.Day : ServerTime.Day + 7 - dayPased;
 
             TimeLeft = FindTimeBeforeBloodNight();
             StartTime = DateTime.Now.Add(TimeLeft);
@@ -30,7 +30,7 @@
 
         private int FindMinsBeforeSunday()
         {
-            int daysLeft = 7 - (BloodNightDay - ServerTime.Day);
+            int daysLeft = BloodNightDay - ServerTime.Day;
 
             return daysLeft * ServerTime.MinutesPerDay;
         }

@@ -1,12 +1,10 @@
-﻿using System.Text.Json;
-
-namespace Portfolio.Utilites.Logger.Json
+﻿namespace Portfolio.Utilites.Logger.Json
 {
     public class JsonLoggerProvider : ILoggerProvider
     {
         private StreamWriter _writer = null!;
-        private int _currentDay = 0;
-        private string _root;
+        private readonly int _currentDay = 0;
+        private readonly string _root;
 
         public JsonLoggerProvider(string root = "./Logs")
         {

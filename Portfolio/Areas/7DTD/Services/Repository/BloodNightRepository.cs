@@ -8,11 +8,9 @@ namespace Portfolio.Areas._7DTD.Services.Repository
         private Timer _timer = null!;
         private TimeSpan refreshPeriod;
 
-
         public BloodNightRepository() => InitServerTime(1, 0, 60);
 
         public BloodNightView GetView() => new(_serverTime);
-
 
         public void InitServerTime(int Day, int Hour, int MinsPerDay)
         {
@@ -27,6 +25,5 @@ namespace Portfolio.Areas._7DTD.Services.Repository
         {
             _serverTime.Update(refreshPeriod.Minutes);
         }
-
     }
 }

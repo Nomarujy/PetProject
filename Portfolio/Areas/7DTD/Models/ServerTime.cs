@@ -10,7 +10,7 @@
 
         public ServerTime()
         {
-            Day = 0;
+            Day = 1;
             Hour = 0;
             MinutesPerDay = 60;
             MinutesPerHour = MinutesPerDay / 24f;
@@ -24,25 +24,27 @@
             MinutesPerHour = MinutesPerDay / 24f;
         }
 
-        private float totalHoursPassed = 0;
+        private float Correction = 0f;
 
         public void Update(int realMinutesPased)
         {
-            totalHoursPassed += (float)realMinutesPased / MinutesPerDay * 24;
+            Correction += realMinutesPased;
 
-            int daysPased = (int)(totalHoursPassed / 24);
-            int hourPased = (int)(totalHoursPassed % 24);
+            int daysPased = (int)(Correction / MinutesPerDay);
+            Correction -= daysPased * MinutesPerDay;
+
+            int hourPased = (int)(Correction / MinutesPerHour);
+            Correction -= hourPased * MinutesPerHour;
 
             Day += daysPased;
             Hour += hourPased;
 
             if (Hour >= 24)
             {
-                Day++;
-                Hour -= 24;
+                daysPased = Hour / 24;
+                Day += daysPased;
+                Hour %= 24;
             }
-
-            totalHoursPassed = totalHoursPassed - daysPased - hourPased;
         }
     }
 }

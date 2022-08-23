@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Models.Authentication.Entity;
 using Portfolio.Models.Authentication.FormModel;
-using System.Security.Claims;
 
 namespace Portfolio.Controls
 {

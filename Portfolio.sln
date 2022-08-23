@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio", "Portfolio\Portfolio.csproj", "{BE36FBF7-FF68-47AF-A553-67A0FC245AF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio_UnitTests", "Portfolio_UnitTests\Portfolio_UnitTests.csproj", "{927FF958-55BE-4743-84D5-8AB2C720B6A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio_UnitTests", "Portfolio_UnitTests\Portfolio_UnitTests.csproj", "{927FF958-55BE-4743-84D5-8AB2C720B6A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
