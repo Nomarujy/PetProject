@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Models;
 using Portfolio.Models.StartPage;
+using Portfolio.Services.Repository;
 using System.Security.Claims;
 
 namespace Portfolio.Controls
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext database;
+        private readonly IMessageRepository _repository;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext dbContext)
+        public HomeController(IMessageRepository repository, ILogger<HomeController> logger)
         {
-            database = dbContext;
+            _repository = repository;
+            _logger = logger;
         }
 
 
@@ -32,12 +34,13 @@ namespace Portfolio.Controls
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Index(MessageModel model)
         {
             if (ModelState.IsValid)
             {
-                database.Messages.Add(model);
+                _repository.Add(model);
+                _logger.LogInformation("Added message by {u}", model.Name);
             }
 
             return View(model);

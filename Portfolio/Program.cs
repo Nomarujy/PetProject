@@ -6,11 +6,9 @@ builder.Configure();
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
-app.UseStaticFiles(new StaticFileOptions
-{
-    RequestPath = "/static"
-});
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 

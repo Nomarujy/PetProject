@@ -8,7 +8,7 @@ namespace Portfolio.Models
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, string>
     {
-        public ApplicationDbContext(DbContextOptions opt) : base(opt) { }
+        public ApplicationDbContext(DbContextOptions opt) : base(opt) { Database.Migrate(); }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

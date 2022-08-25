@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Portfolio.Areas._7DTD.Services;
 using Portfolio.Areas.News.Services.Authorization;
 using Portfolio.Models;
 using Portfolio.Models.Authentication.Entity;
+using Portfolio.Services.Repository;
 using Portfolio.Utilites;
 
 namespace Portfolio
@@ -13,6 +15,10 @@ namespace Portfolio
         {
             builder.AddLogerProviders();
             builder.Services.AddControllersWithViews();
+            builder.Services.Configure<ForwardedHeadersOptions>(opt =>
+            {
+                opt.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
 
             builder.Services.AddDbContext<ApplicationDbContext>();
 
@@ -38,6 +44,7 @@ namespace Portfolio
 
         public static void AddServices(this IServiceCollection service)
         {
+            service.AddScoped<IMessageRepository, MessageRepository>();
             service.Add7DtdServices();
         }
 

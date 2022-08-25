@@ -8,7 +8,7 @@ namespace Portfolio.Models.Authentication.FormModel
         [DisplayName("Имя пользователя")]
         public string UserName { get; set; } = string.Empty;
 
-        [DisplayName("Почта")]
+        [DisplayName("Почта"), EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]

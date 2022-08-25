@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio", "Portfolio\Port
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio_UnitTests", "Portfolio_UnitTests\Portfolio_UnitTests.csproj", "{927FF958-55BE-4743-84D5-8AB2C720B6A3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Production", "Production\Production.shproj", "{41B87C48-7FF8-4097-800D-5C45575A02AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B810F881-D74F-4BFE-8EA1-B214E8560DA0}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Production\Producation.projitems*{41b87c48-7ff8-4097-800d-5c45575a02af}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

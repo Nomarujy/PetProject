@@ -17,8 +17,7 @@ namespace Portfolio_UnitTests.Areas._7DTD.Models
             Assert.True(DateTime.Now < startTime);
         }
 
-        [Theory]
-        [MemberData(nameof(GetTimeLeftData))]
+        [Theory, MemberData(nameof(GetTimeLeftData))]
         public void CheckTimeLeft(ServerTime serverTime, TimeSpan timeLeft)
         {
             BloodNightView view = new(serverTime);

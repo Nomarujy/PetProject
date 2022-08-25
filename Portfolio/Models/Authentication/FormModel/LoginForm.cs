@@ -10,8 +10,7 @@ namespace Portfolio.Models.Authentication.FormModel
         public string UserName { get; set; } = null!;
 
         [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [DataType(DataType.Password), Display(Name = "Пароль")]
         public string Password { get; set; } = null!;
 
         [Display(Name = "Запомнить?")]

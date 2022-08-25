@@ -11,8 +11,7 @@ namespace Portfolio_UnitTests.Areas._7DTD.Models
             _serverTime = new(1, 0, 60);
         }
 
-        [Theory]
-        [MemberData(nameof(GetData))]
+        [Theory, MemberData(nameof(GetData))]
         public void Update(int minutesPassed, Expected expected)
         {
             _serverTime.Update(minutesPassed);
