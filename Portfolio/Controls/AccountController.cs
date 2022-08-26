@@ -1,80 +1,91 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data.Account.Encryptor;
-using Portfolio.Data.Account.Repository;
-using Portfolio.Models.Authorization;
+using Portfolio.Models.Authentication.Entity;
+using Portfolio.Models.Authentication.FormModel;
 
 namespace Portfolio.Controls
 {
     public class AccountController : Controller
     {
-        private readonly IAccountRepository database;
-        private readonly ILogger logger;
-        private readonly IPasswordEncryptor encryptor;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAccountRepository database, IPasswordEncryptor encryptor, ILogger<AccountController> logger)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger)
         {
-            this.database = database;
-            this.encryptor = encryptor;
-            this.logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Login() => View();
+
+        [HttpGet, Authorize]
+        public async Task<IActionResult> Info()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Login");
+            }
+            return View(user);
         }
 
-        [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Logout()
         {
-            return View();
-        }
-
-        public IActionResult Logout()
-        {
-            return SignOut(new AuthenticationProperties() { RedirectUri = "/" }, "Cookies");
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterForm userForm)
-        {
-            if (ModelState.IsValid == false) return BadRequest(ModelState.Values);
-
-            User user = new(userForm, encryptor);
-
-            database.AddUser(user);
-
-            logger.LogInformation("Registered new user {user} by IP: {IP}",
-                user.Email, HttpContext.Connection.RemoteIpAddress);
-
+            _logger.LogInformation("User: {user} logout", User.Identity?.Name);
+            await _signInManager.SignOutAsync();
             return Redirect("/");
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Login(LoginForm userForm, string? returnUrl)
+        [HttpPost, AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Register(RegisterForm form)
         {
-            User? user = database.GetUserWithRole(userForm.Email);
-
-            if (user == null) return BadRequest("UserNotFound");
-
-            if (false == encryptor.PasswordEqual(userForm.Password, user.Password))
+            if (ModelState.IsValid)
             {
-                logger.LogInformation("Failed login atempt in {user} by IP: {IP}",
-                    user.Email, HttpContext.Connection.RemoteIpAddress);
-                return BadRequest();
+                User user = new() { Email = form.Email, UserName = form.UserName };
+                var result = await _userManager.CreateAsync(user, form.Password);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Зарегестрирован пользователь {userName}", user.UserName);
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home", new { area = "" });
+                }
+
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
             }
+            return View(form);
+        }
 
-            var Principal = database.GetClaimPrincipals(user);
+        [HttpPost, AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Login(LoginForm form)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await _signInManager.PasswordSignInAsync(form.UserName, form.Password, form.RememberMe, true);
 
-            return SignIn(Principal, new AuthenticationProperties()
-            { AllowRefresh = true, RedirectUri = returnUrl ?? "/" }); ;
+                if (res.Succeeded)
+                {
+                    _logger.LogInformation("Login success. User: {user}", form.UserName);
+                    return LocalRedirect(form.ReturnUrl ?? "/");
+                }
+                else
+                {
+                    _logger.LogInformation("Login failed. User: {user}", form.UserName);
+                }
+
+            }
+            return View(form);
         }
     }
 }

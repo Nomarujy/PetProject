@@ -1,0 +1,31 @@
+﻿@model UpdateArticleForm
+@{
+    ViewBag.Title = "Update";
+    ViewBag.ManageClass = "current_page_item";
+}
+
+<div asp-validation-summary="All"></div>
+
+<form method="post" asp-antiforgery="true">
+    <div>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div>
+        <label asp-for="Description"></label>
+        <input asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label asp-for="Content"></label>
+        <textarea asp-for="Content"></textarea>
+        <span asp-validation-for="Content"></span>
+    </div>
+    <div>
+        <label asp-for="IsPubleshed"></label>
+        <input asp-for="IsPubleshed" />
+        <span asp-validation-for="IsPubleshed"></span>
+    </div>
+    <input type="submit" value="Create" />
+</form>

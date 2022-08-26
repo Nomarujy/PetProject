@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  portfolio_unittests:
+    image: ${DOCKER_REGISTRY-}portfoliounittests
+    build:
+      context: .
+      dockerfile: Portfolio_UnitTests/Dockerfile

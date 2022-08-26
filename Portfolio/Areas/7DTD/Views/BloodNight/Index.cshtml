@@ -1,26 +1,61 @@
 ﻿@model BloodNightView
 
+@{
+    string TimeLeft = $"{Model.TimeLeft.Hours}:{Model.TimeLeft.Minutes}";
+    string Imagename = $"{Model.DayOfWeek}.gif";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>7DTD Blood Night</title>
+    <link rel="stylesheet" href="/Areas/7DTD/css/style.css">
 </head>
 <body>
+    <header>
+        <div class="Logo"></div>
+        <nav>
 
-    <p>
-        <p>На сервере сейчас @Model.ServerTime.Day день, @Model.ServerTime.Hour час</p>
-        <p>Кровавая ночь будет: @Model.BloodNightDay</p>
-        <p>Ночь начнется через: @Model.TimeToBloodNight.Hours часов и @Model.TimeToBloodNight.Minutes минут</p>
-    </p>
-  
-    <form method="post" asp-action="Update">
-        <input type="text" name="Day" placeholder="Day" />
-        <input type="text" name="Hour" placeholder="Hour" />
-        <input type="text" name="MinsPerDay" placeholder="MinsPerDay" />
-        <input type="submit" />
-    </form>
+        </nav>
+    </header>
+    <main>
+        <div class="NightInfo">
+            <div class="Timer">
+                <div class="Progresbar">
+                    <div style="width: @Model.Percentage%;" class="ProgresbarActual">
+                        <div class="ProgresPoint">
+                            <div class="ProgresMenu">
+                                <span>@TimeLeft</span>
+                                <div class="triangle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Moon" style="background-image: url(/Areas/7DTD/images/Loon/@Imagename);">@Model.BloodNightDay</div>
+            <div class="StartTime">Ночь ожидаедается в @Model.StartTime.ToString("HH:MM")</div>
+        </div>
+
+        <div class="Update">
+            <form class="UpdateMenu" asp-action="Update" method="post">
+                <div class="formDiv">
+                    <label for="Day">Day</label>
+                    <input type="text" name="Day" id="">
+                </div>
+                <div class="formDiv">
+                    <label for="Hour">Hour</label>
+                    <input type="text" name="Hour" id="">
+                </div>
+                <div class="formDiv GameDay">
+                    <label for="MinsPerDay">MinutesPerDay</label>
+                    <input type="text" name="MinsPerDay" id="">
+                </div>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </main>
 </body>
 </html>

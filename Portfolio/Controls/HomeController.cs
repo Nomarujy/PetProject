@@ -1,51 +1,49 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data.Contact.Repository;
-using Portfolio.Models.Contact;
+﻿using Microsoft.AspNetCore.Mvc;
+using Portfolio.Models.StartPage;
+using Portfolio.Services.Repository;
+using System.Security.Claims;
 
 namespace Portfolio.Controls
 {
     public class HomeController : Controller
     {
-        private readonly IContactRepository _contactRepository;
-        private readonly ILogger logger;
+        private readonly IMessageRepository _repository;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IContactRepository databaseContext, ILogger<HomeController> logger)
+        public HomeController(IMessageRepository repository, ILogger<HomeController> logger)
         {
-            _contactRepository = databaseContext;
-            this.logger = logger;
+            _repository = repository;
+            _logger = logger;
         }
+
 
         [HttpGet]
         public IActionResult Index()
         {
+            if (User.Identity?.IsAuthenticated ?? false)
+            {
+                MessageModel model = new()
+                {
+                    Name = User.Identity?.Name ?? "",
+                    Email = User.FindFirstValue(ClaimTypes.Email) ?? ""
+                };
+
+                return View(model);
+            }
+
             return View();
         }
 
-        [HttpGet, Authorize(Roles = "Admin")]
-        public IActionResult Messages(bool Descending = false, int Page = 0, int Count = 10)
-        {
-            ContactModel[] result;
-
-            if (Descending) result = _contactRepository.GetLast(Page, Count);
-            else result = _contactRepository.GetFirst(Page, Count);
-
-            return View(result);
-        }
-
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(ContactModel contact)
+        public IActionResult Index(MessageModel model)
         {
             if (ModelState.IsValid)
             {
-                _contactRepository.Add(contact);
-
-                logger.LogInformation("Geter message by {name}, IP: {IP}",
-                    contact.Name, HttpContext.Connection.RemoteIpAddress);
-                return Redirect("/");
+                _repository.Add(model);
+                _logger.LogInformation("Added message by {u}", model.Name);
             }
 
-            return View("ModelError", ModelState);
+            return View(model);
         }
     }
 }

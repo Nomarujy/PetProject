@@ -4,27 +4,42 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <SignAssembly>False</SignAssembly>
+    <UserSecretsId>882685b9-5226-4779-a9a0-9029256b6f63</UserSecretsId>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+
   <ItemGroup>
-    <Compile Remove="Areas\News\Views\Manage\**" />
-    <Content Remove="Areas\News\Views\Manage\**" />
-    <EmbeddedResource Remove="Areas\News\Views\Manage\**" />
-    <None Remove="Areas\News\Views\Manage\**" />
+    <Compile Remove="Areas\7DTD\Views\Shared\**" />
+    <Compile Remove="wwwroot\Areas\7DTD\Index\**" />
+    <Content Remove="Areas\7DTD\Views\Shared\**" />
+    <Content Remove="wwwroot\Areas\7DTD\Index\**" />
+    <EmbeddedResource Remove="Areas\7DTD\Views\Shared\**" />
+    <EmbeddedResource Remove="wwwroot\Areas\7DTD\Index\**" />
+    <None Remove="Areas\7DTD\Views\Shared\**" />
+    <None Remove="wwwroot\Areas\7DTD\Index\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
+    <PackageReference Include="Utf8Json" Version="1.3.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\7DTD\Views\Shared\" />
-    <Folder Include="Logs\" />
+    <Content Include="Areas\News\Component\ContentParserViewComponent.cs" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

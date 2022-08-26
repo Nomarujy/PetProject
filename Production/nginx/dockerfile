@@ -1,0 +1,8 @@
+﻿FROM nginx
+EXPOSE 8080
+
+COPY cfg/ /etc/nginx/
+COPY wwwroot/ /var/lib/nginx/static/
+
+VOlUME /var/logs/nginx/
+VOLUME /var/lib/nginx/static/

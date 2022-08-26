@@ -1,12 +1,30 @@
 ﻿@model RegisterForm
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Register";
 }
 
-<form asp-antiforgery="true">
-    <input asp-for="Username" placeholder="Username" />
-    <input asp-for="Email" placeholder="Email"/>
-    <input type="password" asp-for="Password" placeholder="Password"/>
-    <input type="password" asp-for="RepeatPassword" placeholder="RepeatPassword"/>
-    <input type="submit" value="Send"/>
+<div asp-validation-summary="All"></div>
+
+<form method="post" asp-antiforgery="true">
+    <div>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" />
+        <span asp-validation-for="UserName"></span>
+    </div>
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="PasswordConfirm"></label>
+        <input asp-for="PasswordConfirm" />
+        <span asp-validation-for="PasswordConfirm"></span>
+    </div>
+    <input type="submit" />
 </form>

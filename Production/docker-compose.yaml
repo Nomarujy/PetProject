@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+
+  psql:
+    image: postgres
+
+    volumes:
+      - postgreDB:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_PASSWORD: postgres
+    
+  app: 
+    build: App/
+
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - appLogs:/app/Logs
+    environment:
+      POSTGRES_HOST: psql
+      POSTGRES_DATABASE: Production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  nginx:
+    build: nginx/
+
+    ports:
+      - 8080:8080
+
+    volumes:
+      - nginxLogs:/var/logs/nginx/
+
+volumes:
+  postgreDB:
+
+  appLogs:
+  nginxLogs:

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Article>
+@{
+    ViewBag.Title = "Hystory";
+    ViewBag.ManageClass = "current_page_item";
+}
+
+<h1>Hystory</h1>
+
+<table>
+    <tr>
+        <td>Title</td>
+        <td>Publeshed</td>
+        <td>Description</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.IsPubleshed</td>
+            <td>@item.Description</td>
+            <td><a asp-action="Article" asp-controller="Analytics" asp-route-Id="@item.Id">Analytic</a></td>
+            <td><a asp-action="Update" asp-controller="manage" asp-route-Id="@item.Id">Edit</a></td>
+        </tr>
+    }
+</table>

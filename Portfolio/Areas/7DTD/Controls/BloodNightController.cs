@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Areas._7DTD.Data.BloodNightRepository;
+using Portfolio.Areas._7DTD.Models;
+using Portfolio.Areas._7DTD.Services.Repository;
 
 namespace Portfolio.Areas._7DTD.Controls
 {
+    [Area("7DTD")]
     public class BloodNightController : Controller
     {
-        private IBloodNightRepository repository;
-        private ILogger logger;
+        private readonly IBloodNightRepository repository;
+        private readonly ILogger logger;
 
         public BloodNightController(IBloodNightRepository bloodNightRepository, ILogger<BloodNightController> Logger)
         {
@@ -22,12 +24,18 @@ namespace Portfolio.Areas._7DTD.Controls
         }
 
         [HttpPost]
-        public IActionResult Update(int Day, int Hour, int MinsPerDay)
+        public IActionResult Update(InputForm form)
         {
-            repository.InitServerTime(Day, Hour, MinsPerDay);
+            if (ModelState.IsValid)
+            {
+                repository.InitServerTime(form.Day, form.Hour, form.MinsPerDay);
 
-            logger.LogInformation("Area: 7DTD. Обновлены значения BloodNightRepository");
-            return RedirectToAction("Index");
+                logger.LogInformation("Updated servertime Day:{D}, Hour:{H}, MinsPerDay:{MPD}", form.Day, form.Hour, form.MinsPerDay);
+
+                return RedirectToAction("Index", "BloodNight", new { area = "7DTD" });
+            }
+
+            return BadRequest();
         }
     }
 }
