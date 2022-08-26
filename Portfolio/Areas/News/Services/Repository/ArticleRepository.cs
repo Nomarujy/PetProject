@@ -33,8 +33,8 @@ namespace Portfolio.Areas.News.Services.Repository
                 .Select(av => new { av.ArticleId, av.ViewTime })
                 .Where(av => av.ViewTime.Hour >= DateTime.UtcNow.Hour - 1)
                 .GroupBy(av => av.ArticleId).Select(a => new { a.Key, Count = a.Count() })
-                .OrderByDescending(a => a.Count).First().Key
-            ).FirstAsync();
+                .OrderByDescending(a => a.Count).FirstOrDefault()!.Key
+            ).FirstOrDefaultAsync();
         }
 
         public async Task AddArticleAsync(Article model)
