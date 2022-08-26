@@ -11,6 +11,7 @@ namespace Portfolio_UnitTests.Areas.Base.Controls
 
         private readonly Mock<IMessageRepository> repositoryMock;
         private readonly Mock<ILogger<HomeController>> logerMock;
+
         public HomeTest()
         {
             repositoryMock = new();
@@ -21,7 +22,7 @@ namespace Portfolio_UnitTests.Areas.Base.Controls
         }
 
         [Fact]
-        public void IndexReturnView()
+        public void IndexGetReturnView()
         {
             var res = controller.Index() as ViewResult;
 
@@ -29,7 +30,7 @@ namespace Portfolio_UnitTests.Areas.Base.Controls
         }
 
         [Fact]
-        public void IndexAddMesage()
+        public void IndexPostAddMesage()
         {
             MessageModel message = new();
 

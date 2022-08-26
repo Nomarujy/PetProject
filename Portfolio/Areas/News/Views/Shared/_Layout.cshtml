@@ -23,27 +23,15 @@
 						<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								@if (ViewBag.Title == "Index")
-								{
-									<li class="current_page_item"><a asp-action="Index" asp-controller="Read">Index</a></li>
-								}
-								else{
-									<li><a asp-action="Index" asp-controller="Read">Index</a></li>
-								}
-								@if (ViewBag.Title == "History")
-								{
-									<li class="current_page_item"><a href="/News/Home/history">History</a></li>
-								}
-								else{
-									<li><a href="/News/Home/history">History</a></li>
-								}
-								@if (Context.Request.Path.Value?.ToLower().Contains("manage") ?? false)
-								{
-									<li class="current_page_item">
+								<li class="@ViewBag.IndexClass"><a asp-action="Index" asp-controller="Index">Index</a></li>
+
+								<li class="@ViewBag.HistoryClass"><a asp-controller="Home" asp-action="History">History</a></li>
+
+								<li class="@ViewBag.ManageClass">
 									<a href="#">Manage</a>
 									<ul>
-										<li><a href="/News/manage/Create">Create new</a></li>
-										<li><a href="/News/Home/MyArticles">My articles</a></li>
+										<li><a asp-controller="Manage" asp-action="Create">Create new</a></li>
+										<li><a asp-controller="Analytics" asp-action="MyArticles">My articles</a></li>
 										<li>
 											<a href="#">Phasellus consequat</a>
 											<ul>
@@ -55,25 +43,6 @@
 										</li>
 									</ul>
 								</li>
-								}
-								else{
-									<li>
-										<a href="#">Manage</a>
-										<ul>
-											<li><a href="/News/manage/Create">Create new</a></li>
-											<li><a href="/News/manage/MyArticles">My articles</a></li>
-											<li>
-												<a href="#">Phasellus consequat</a>
-												<ul>
-													<li><a href="#">Lorem ipsum dolor</a></li>
-													<li><a href="#">Phasellus consequat</a></li>
-													<li><a href="#">Magna phasellus</a></li>
-													<li><a href="#">Etiam dolore nisl</a></li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-								}
 
 							</ul>
 						</nav>
@@ -82,14 +51,7 @@
 					</div>
 				</header>
 
-				@if (ViewBag.Banner == true ?? false)
-				{
-					<!-- Banner -->
-					<div id="banner">
-						<p>Does this statement make you want to click the big shiny button?</p>
-						<a href="#" class="button large icon solid fa-check-circle">Yes it does</a>
-					</div>
-				}
+				@await RenderSectionAsync("Banner", false)
 
 			</div>
 		</div>

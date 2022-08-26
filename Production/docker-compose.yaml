@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: postgres
     
   app: 
-    build: App/
+    image: nomarujy/portfolio:0.9
 
     ports:
       - 80:80

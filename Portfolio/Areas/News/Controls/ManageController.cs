@@ -58,7 +58,7 @@ namespace Portfolio.Areas.News.Controls
                 };
 
                 await _database.AddArticleAsync(article);
-                return RedirectToAction(nameof(MyArticles));
+                return RedirectToAction("MyArticle", "Analytics");
             }
             return View(form);
         }
@@ -83,7 +83,7 @@ namespace Portfolio.Areas.News.Controls
 
                     await _database.UpdateArticleAsync(article);
 
-                    return RedirectToAction(nameof(MyArticles));
+                    return RedirectToAction("MyArticle", "Analytics");
                 }
                 else
                 {
@@ -91,14 +91,6 @@ namespace Portfolio.Areas.News.Controls
                 }
             }
             return View(form);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> MyArticles()
-        {
-            string authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var model = await _database.GetArticlesByAuthorIdAsync(authorId);
-            return View(model);
         }
     }
 }

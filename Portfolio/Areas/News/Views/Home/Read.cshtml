@@ -18,7 +18,7 @@
 							<p>@Model.Article.Description</p>
 						</header>
 
-						<span class="image featured"><img src="static/Areas/News/images/pic08.jpg" alt="" /></span>
+						<span class="image featured"><img src="/Areas/News/images/pic08.jpg" alt="" /></span>
 
 						<vc:content-parser content="@Model.Article.Content"/>
 
@@ -40,7 +40,7 @@
 							@foreach (var item in Model.ArticleList)
 							{
 								<article class="box excerpt">
-									<a class="image left" asp-action="Read" asp-controller="Home" asp-route-Id="@item.Id"><img src="static/Areas/News/images/pic04.jpg" alt="" /></a>
+									<a class="image left" asp-action="Read" asp-controller="Home" asp-route-Id="@item.Id"><img src="/Areas/News/images/pic04.jpg" alt="" /></a>
 									<div>
 										<header>
 											<span class="date">@item.DateOfPublishing</span>
@@ -61,7 +61,7 @@
 						<section class="box spotlight">
 							<h2 class="icon fa-file-alt">Spotlight</h2>
 							<article>
-								<a class="image featured" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id"><img src="static/Areas/News/images/pic07.jpg" alt=""></a>
+								<a class="image featured" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
 								<header>
 									<h3><a asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id">@Model.Spotlight.Title</a></h3>
 									<p>Author: @Model.Spotlight.AuthorUserName</p>

@@ -10,15 +10,23 @@ namespace Portfolio.Controls
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult Register() => View();
+
+        [HttpGet]
+        public IActionResult Login() => View();
+
         [HttpGet, Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Info()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -29,14 +37,9 @@ namespace Portfolio.Controls
             return View(user);
         }
 
-        [HttpGet]
-        public IActionResult Register() => View();
-
-        [HttpGet]
-        public IActionResult Login() => View();
-
         public async Task<IActionResult> Logout()
         {
+            _logger.LogInformation("User: {user} logout", User.Identity?.Name);
             await _signInManager.SignOutAsync();
             return Redirect("/");
         }
@@ -51,6 +54,7 @@ namespace Portfolio.Controls
 
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation("Зарегестрирован пользователь {userName}", user.UserName);
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
@@ -72,7 +76,12 @@ namespace Portfolio.Controls
 
                 if (res.Succeeded)
                 {
+                    _logger.LogInformation("Login success. User: {user}", form.UserName);
                     return LocalRedirect(form.ReturnUrl ?? "/");
+                }
+                else
+                {
+                    _logger.LogInformation("Login failed. User: {user}", form.UserName);
                 }
 
             }
