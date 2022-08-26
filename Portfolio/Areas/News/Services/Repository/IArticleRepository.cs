@@ -15,6 +15,6 @@ namespace Portfolio.Areas.News.Services.Repository
         Task WriteToHistory(string userId, int articleId);
         Task<IEnumerable<ArticleViewers>> GetUserHistory(string userId);
 
-        AnaliticModel GetAnaliticsById(int Id);
+        Task<AnalyticModel> GetAnaliticsByIdAsync(int Id);
     }
 }

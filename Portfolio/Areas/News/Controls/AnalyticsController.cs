@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Areas.News.Services.Repository;
 using System.Security.Claims;
 
 namespace Portfolio.Areas.News.Controls
 {
-    [Area("News")]
+    [Area("News"), Authorize]
     public class AnalyticsController : Controller
     {
         private readonly IArticleRepository _database;
+        private readonly IAuthorizationService _authorization;
 
-        public AnalyticsController(IArticleRepository database)
+        public AnalyticsController(IArticleRepository database, IAuthorizationService authorization)
         {
             _database = database;
+            _authorization = authorization;
         }
 
         [HttpGet]
@@ -23,9 +26,10 @@ namespace Portfolio.Areas.News.Controls
         }
 
         [HttpGet]
-        public IActionResult Article(int Id)
+        public async Task<IActionResult> Article(int Id)
         {
-            var model = _database.GetAnaliticsById(Id);
+            // Access CHECK!
+            var model = await _database.GetAnaliticsByIdAsync(Id);
             return View(model);
         }
     }

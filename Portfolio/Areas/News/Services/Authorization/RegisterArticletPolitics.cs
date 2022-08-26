@@ -19,7 +19,7 @@ namespace Portfolio.Areas.News.Services.Authorization
         public static void AddArticlePolitics(this AuthorizationOptions options)
         {
             options.AddPolicy("News_Read", opt => opt.Requirements.Add(new ArticleReadRequirement()));
-            options.AddPolicy("News_Update", opt => opt.Requirements.Add(new PostUpdateRequirement()));
+            options.AddPolicy("News_Manage", opt => opt.Requirements.Add(new ArticleUpdateRequirement()));
         }
     }
 }

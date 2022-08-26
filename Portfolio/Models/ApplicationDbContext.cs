@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Areas.News.Models.Entity;
 using Portfolio.Models.Authentication.Entity;
@@ -18,11 +19,10 @@ namespace Portfolio.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
             string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+            string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "postgres";
             string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
-            string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "postgres";
 
             string connectionString = $"Host={host};Username={username};Password={password};Database={database}";
 

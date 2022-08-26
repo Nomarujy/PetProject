@@ -2,9 +2,9 @@
 
 namespace Portfolio.Areas.News.Services.Authorization.Access.Update
 {
-    public class ArticleUpdateAdminHandler : AuthorizationHandler<PostUpdateRequirement>
+    public class ArticleUpdateAdminHandler : AuthorizationHandler<ArticleUpdateRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PostUpdateRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ArticleUpdateRequirement requirement)
         {
             var updateClaim = NewsClaim.Update;
 

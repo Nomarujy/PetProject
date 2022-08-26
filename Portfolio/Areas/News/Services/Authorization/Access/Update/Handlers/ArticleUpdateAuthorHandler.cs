@@ -4,9 +4,9 @@ using System.Security.Claims;
 
 namespace Portfolio.Areas.News.Services.Authorization.Access.Update
 {
-    public class ArticleUpdateAuthorHandler : AuthorizationHandler<PostUpdateRequirement, Article>
+    public class ArticleUpdateAuthorHandler : AuthorizationHandler<ArticleUpdateRequirement, Article>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PostUpdateRequirement requirement, Article resource)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ArticleUpdateRequirement requirement, Article resource)
         {
             string authorId = resource.AuthorId;
             string userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);

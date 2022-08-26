@@ -12,11 +12,13 @@ namespace Portfolio.Areas.News.Controls
     {
         private readonly IArticleRepository _database;
         private readonly IAuthorizationService _authorization;
+        private readonly ILogger<ManageController> _logger;
 
-        public ManageController(IArticleRepository repository, IAuthorizationService authorization)
+        public ManageController(IArticleRepository repository, IAuthorizationService authorization, ILogger<ManageController> logger)
         {
             _database = repository;
             _authorization = authorization;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -28,15 +30,22 @@ namespace Portfolio.Areas.News.Controls
             Article? article = await _database.FindByIdAsync(Id);
             if (article != null)
             {
-                UpdateArticleForm model = new()
+                if (await UserHaveAccess(article))
                 {
-                    Id = article.Id,
-                    Title = article.Title,
-                    Description = article.Description,
-                    Content = article.Content,
-                    IsPubleshed = article.IsPubleshed
-                };
-                return View(model);
+                    UpdateArticleForm model = new()
+                    {
+                        Id = article.Id,
+                        Title = article.Title,
+                        Description = article.Description,
+                        Content = article.Content,
+                        IsPubleshed = article.IsPubleshed
+                    };
+                    return View(model);
+                }
+                else
+                {
+                    Forbid();
+                }
             }
             return NotFound();
         }
@@ -57,6 +66,7 @@ namespace Portfolio.Areas.News.Controls
                     DateOfPublishing = DateTime.UtcNow,
                 };
 
+                _logger.LogInformation("Created article: {Title}, by user: {userId}.", article.Title, article.AuthorId);
                 await _database.AddArticleAsync(article);
                 return RedirectToAction("MyArticle", "Analytics");
             }
@@ -71,26 +81,34 @@ namespace Portfolio.Areas.News.Controls
                 Article? article = await _database.FindByIdAsync(form.Id);
                 if (article == null) return NotFound();
 
-                var result = await _authorization.AuthorizeAsync(User, article, "News_Update");
-
-                if (result.Succeeded)
+                if (await UserHaveAccess(article))
                 {
-                    article.Title = form.Title;
-                    article.Description = form.Description;
-                    article.Content = form.Content;
-                    article.IsPubleshed = form.IsPubleshed;
-                    if (form.IsPubleshed) article.DateOfPublishing = DateTime.UtcNow;
+                    {
+                        article.Title = form.Title;
+                        article.Description = form.Description;
+                        article.Content = form.Content;
+                        article.IsPubleshed = form.IsPubleshed;
+                        if (form.IsPubleshed) article.DateOfPublishing = DateTime.UtcNow;
+                    }
 
+                    _logger.LogInformation("Updated article with id: {articleId}", article.Id);
                     await _database.UpdateArticleAsync(article);
 
                     return RedirectToAction("MyArticle", "Analytics");
                 }
                 else
                 {
+                    _logger.LogInformation("Forbid update article with id: {articleId}, for user {name}", article.Id, User.Identity?.Name ?? "Anonymous");
                     return Forbid();
                 }
             }
             return View(form);
+        }
+
+        private async Task<bool> UserHaveAccess(Article article)
+        {
+            var result = await _authorization.AuthorizeAsync(User, article, "News_Manage");
+            return result.Succeeded;
         }
     }
 }

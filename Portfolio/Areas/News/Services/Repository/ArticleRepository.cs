@@ -68,11 +68,12 @@ namespace Portfolio.Areas.News.Services.Repository
                 .Take(10).ToArrayAsync();
         }
 
-        public AnaliticModel GetAnaliticsById(int Id)
+        public async Task<AnalyticModel> GetAnaliticsByIdAsync(int Id)
         {
-            var res = _database.ArticleViewers.Where(av => av.Id == Id).Count();
+            //TO DO On hard request
+            var res = await _database.ArticleViewers.Where(av => av.Id == Id).CountAsync();
 
-            AnaliticModel model = new()
+            AnalyticModel model = new()
             {
                 Views = _database.ArticleViewers.Where(av => av.ArticleId == Id).Count(),
                 UnicalViews = _database.ArticleViewers.Where(av => av.ArticleId == Id).GroupBy(av => av.ViewerId).Count(),
