@@ -6,11 +6,7 @@ builder.Configure();
 
 var app = builder.Build();
 
-app.UseForwardedHeaders();
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseAuthentication();
-app.UseAuthorization();
+app.Configure();
 
 app.MapControllerRoute(name: "Areas",
     pattern: "{area}/{controller}/{action}",

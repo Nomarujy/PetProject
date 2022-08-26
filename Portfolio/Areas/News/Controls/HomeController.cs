@@ -26,7 +26,7 @@ namespace Portfolio.Areas.News.Controls
         [HttpGet]
         public async Task<IActionResult> Read(int Id)
         {
-            var article = await _database.FindByIdAsync(Id);
+            var article = await _database.GetByIdAsync(Id);
             if (article != null)
             {
                 var result = await _authorizationService.AuthorizeAsync(User, article, "News_Read");
@@ -51,7 +51,7 @@ namespace Portfolio.Areas.News.Controls
         private async Task<NewsViewModel> GetViewModel(Article? article = null)
         {
             var recentlyPost = await _database.GetRecentlyAsync(5);
-            Article? spotlight = null;
+            Article? spotlight = await _database.GetSpotlight();
             return new NewsViewModel(recentlyPost, spotlight, article);
         }
 

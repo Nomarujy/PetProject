@@ -27,7 +27,7 @@ namespace Portfolio.Areas.News.Controls
         [HttpGet, AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int Id)
         {
-            Article? article = await _database.FindByIdAsync(Id);
+            Article? article = await _database.GetByIdAsync(Id);
             if (article != null)
             {
                 if (await UserHaveAccess(article))
@@ -78,7 +78,7 @@ namespace Portfolio.Areas.News.Controls
         {
             if (ModelState.IsValid)
             {
-                Article? article = await _database.FindByIdAsync(form.Id);
+                Article? article = await _database.GetByIdAsync(form.Id);
                 if (article == null) return NotFound();
 
                 if (await UserHaveAccess(article))

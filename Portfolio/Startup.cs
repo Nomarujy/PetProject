@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Areas._7DTD.Services;
 using Portfolio.Areas.News.Services.Authorization;
 using Portfolio.Models;
@@ -11,6 +12,7 @@ namespace Portfolio
 {
     public static class Startup
     {
+        #region BuilderConfigure
         public static void Configure(this WebApplicationBuilder builder)
         {
             builder.AddLogerProviders();
@@ -42,11 +44,38 @@ namespace Portfolio
             service.AddArticleHandlers();
         }
 
-        public static void AddServices(this IServiceCollection service)
+        private static void AddServices(this IServiceCollection service)
         {
             service.AddScoped<IMessageRepository, MessageRepository>();
-            service.Add7DtdServices();
+            service.AddAreaServices();
         }
 
+        #endregion BuilderConfigure
+
+        #region AppConfigure
+
+        public static void Configure(this WebApplication app)
+        {
+            app.UseForwardedHeaders();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                configureDB(scope);
+            }
+        }
+
+        private static void configureDB(IServiceScope scope)
+        {
+            using (var db = scope.ServiceProvider.GetService<ApplicationDbContext>())
+            {
+                db?.Database.Migrate();
+            }
+        }
+
+        #endregion AppConfigure
     }
 }

@@ -7,11 +7,8 @@ namespace Portfolio.Areas.News.Models.ViewModel
         public NewsViewModel(IEnumerable<Article> recentlyPosts, Article? spotlight, Article? article)
         {
             ArticleList = recentlyPosts;
-            Spotlight = spotlight ?? new()
-            {
-                Title = "No Spotlight"
-            };
-            Article = article ?? new();
+            Article = article ?? new() { Title="No Article"};
+            Spotlight = spotlight ?? Article;
         }
 
         public IEnumerable<Article> ArticleList { get; set; }

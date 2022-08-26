@@ -14,7 +14,7 @@ namespace Portfolio.Areas.News.Services.Repository
             _database = database;
         }
 
-        public async Task<Article?> FindByIdAsync(int Id)
+        public async Task<Article?> GetByIdAsync(int Id)
         {
             return await _database.Articles.FirstOrDefaultAsync(a => a.Id == Id);
         }
@@ -25,6 +25,16 @@ namespace Portfolio.Areas.News.Services.Repository
                 .Where(a => a.IsDeleted == false && a.IsPubleshed)
                 .OrderByDescending(a => a.Id)
                 .Take(count).ToArrayAsync();
+        }
+
+        public async Task<Article?> GetSpotlight()
+        {
+            return await _database.Articles.Where(c => c.Id == _database.ArticleViewers
+                .Select(av => new { av.ArticleId, av.ViewTime })
+                .Where(av => av.ViewTime.Hour >= DateTime.UtcNow.Hour - 1)
+                .GroupBy(av => av.ArticleId).Select(a => new { a.Key, Count = a.Count() })
+                .OrderByDescending(a => a.Count).First().Key
+            ).FirstAsync();
         }
 
         public async Task AddArticleAsync(Article model)
@@ -74,7 +84,7 @@ namespace Portfolio.Areas.News.Services.Repository
                 c.AuthorId,
                 Views = _database.ArticleViewers.Where(av=> av.Id == articleId).Count(),
                 UnicalViews = _database.ArticleViewers.Where(av => av.Id == articleId).GroupBy(av=> av.Id).Count(),
-                LastHour = _database.ArticleViewers.Where(av => av.ArticleId == articleId).Count(av => av.ViewTime.Hour > DateTime.UtcNow.Hour - 1),
+                LastHour = _database.ArticleViewers.Where(av => av.ArticleId == articleId).Count(av => av.ViewTime.Hour >= DateTime.UtcNow.Hour - 1),
                 Today = _database.ArticleViewers.Where(av => av.ArticleId == articleId).Count(av => av.ViewTime.Day == DateTime.UtcNow.Day)
             }).FirstOrDefaultAsync();
 

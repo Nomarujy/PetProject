@@ -9,7 +9,7 @@ namespace Portfolio.Models
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, string>
     {
-        public ApplicationDbContext(DbContextOptions opt) : base(opt) { Database.Migrate(); }
+        public ApplicationDbContext(DbContextOptions opt) : base(opt) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,7 @@ namespace Portfolio.Models
 
             optionsBuilder.UseNpgsql(connectionString,
                 opt => opt.EnableRetryOnFailure());
+
         }
 
         public DbSet<MessageModel> Messages { get; set; } = null!;
