@@ -28,8 +28,13 @@ namespace Portfolio.Areas.News.Controls
         [HttpGet]
         public async Task<IActionResult> Article(int Id)
         {
-            // Access CHECK!
-            var model = await _database.GetAnaliticsByIdAsync(Id);
+            var model = await _database.GetAnaliticsByIdAsync(Id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (model == null)
+            {
+                Forbid();
+            }
+
             return View(model);
         }
     }

@@ -16,7 +16,7 @@
     {
         <tr>
             <td>@item.ViewTime.ToString("g")</td>
-            <td><a asp-action="Article" asp-route-Id="@item.ArticleId">@item.Article.Title</a></td>
+            <td><a asp-action="Read" asp-route-Id="@item.ArticleId">@item.Article.Title</a></td>
             <td>@item.Article.Description</td>
         </tr>
     }

@@ -68,17 +68,27 @@ namespace Portfolio.Areas.News.Services.Repository
                 .Take(10).ToArrayAsync();
         }
 
-        public async Task<AnalyticModel> GetAnaliticsByIdAsync(int Id)
+        public async Task<AnalyticModel?> GetAnaliticsByIdAsync(int articleId, string AuthorId)
         {
-            //TO DO On hard request
-            var res = await _database.ArticleViewers.Where(av => av.Id == Id).CountAsync();
+            var res = await _database.Articles.Select(c => new {
+                c.AuthorId,
+                Views = _database.ArticleViewers.Where(av=> av.Id == articleId).Count(),
+                UnicalViews = _database.ArticleViewers.Where(av => av.Id == articleId).GroupBy(av=> av.Id).Count(),
+                LastHour = _database.ArticleViewers.Where(av => av.ArticleId == articleId).Count(av => av.ViewTime.Hour > DateTime.UtcNow.Hour - 1),
+                Today = _database.ArticleViewers.Where(av => av.ArticleId == articleId).Count(av => av.ViewTime.Day == DateTime.UtcNow.Day)
+            }).FirstOrDefaultAsync();
+
+            if (res == null || res.AuthorId != AuthorId)
+            {
+                return null;
+            }
 
             AnalyticModel model = new()
             {
-                Views = _database.ArticleViewers.Where(av => av.ArticleId == Id).Count(),
-                UnicalViews = _database.ArticleViewers.Where(av => av.ArticleId == Id).GroupBy(av => av.ViewerId).Count(),
-                LastHour = _database.ArticleViewers.Where(av => av.ArticleId == Id).Count(av => av.ViewTime.Hour > DateTime.UtcNow.Hour - 1),
-                Today = _database.ArticleViewers.Where(av => av.ArticleId == Id).Count(av => av.ViewTime.Day == DateTime.UtcNow.Day),
+                Views = res.Views,
+                UnicalViews = res.UnicalViews,
+                LastHour = res.LastHour,
+                Today = res.Today
             };
             return model;
         }

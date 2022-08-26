@@ -68,7 +68,7 @@ namespace Portfolio.Areas.News.Controls
 
                 _logger.LogInformation("Created article: {Title}, by user: {userId}.", article.Title, article.AuthorId);
                 await _database.AddArticleAsync(article);
-                return RedirectToAction("MyArticle", "Analytics");
+                return RedirectToAction("MyArticles", "Analytics");
             }
             return View(form);
         }
