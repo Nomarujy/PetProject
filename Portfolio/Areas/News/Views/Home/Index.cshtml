@@ -1,4 +1,4 @@
-﻿@model NewsViewModel
+﻿@model RecentlyViewModel
 @{
 	ViewBag.Title = "Index";
 	ViewBag.Banner = true;
@@ -124,7 +124,7 @@
 									<a class="image left" asp-action="Read" asp-controller="Home" asp-route-Id="@item.Id"><img src="/Areas/News/images/pic04.jpg" alt="" /></a>
 									<div>
 										<header>
-											<span class="date">@item.DateOfPublishing</span>
+											<span class="date">@item.PubleshedTime</span>
 											<h3><a asp-action="Article" asp-controller="Home" asp-route-Id="@item.Id">@item.Title</a></h3>
 										</header>
 										<p>
@@ -145,7 +145,7 @@
 								<a class="image featured" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
 								<header>
 									<h3><a asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id">@Model.Spotlight.Title</a></h3>
-									<p>Author: @Model.Spotlight.AuthorUserName</p>
+									<p>Author: @Model.Spotlight.AuthorName</p>
 								</header>
 								<p>
 									@Model.Spotlight.Description

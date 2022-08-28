@@ -9,26 +9,24 @@ namespace Portfolio.Areas.News.Controls
     public class AnalyticsController : Controller
     {
         private readonly IArticleRepository _database;
-        private readonly IAuthorizationService _authorization;
 
-        public AnalyticsController(IArticleRepository database, IAuthorizationService authorization)
+        public AnalyticsController(IArticleRepository database)
         {
             _database = database;
-            _authorization = authorization;
         }
 
         [HttpGet]
         public async Task<IActionResult> MyArticles()
         {
             string authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var model = await _database.GetArticlesByAuthorIdAsync(authorId);
+            var model = await _database.GetAuthorArticlesAsync(authorId);
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Article(int Id)
         {
-            var model = await _database.GetAnaliticsByIdAsync(Id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var model = await _database.GetArticleAnaliticsAsync(Id);
 
             if (model == null)
             {
