@@ -1,16 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Portfolio.Areas.News.Controls;
-using Portfolio.Areas.News.Models.Entity;
+﻿using Portfolio.Areas.News.Controls;
 using Portfolio.Areas.News.Models.ViewModel.Analytics;
 using Portfolio.Areas.News.Models.ViewModel.Home;
 using Portfolio.Areas.News.Services.Repository;
 using Portfolio_UnitTests.Mock;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Portfolio_UnitTests.Areas.News.Controls
 {
@@ -38,7 +30,7 @@ namespace Portfolio_UnitTests.Areas.News.Controls
 
             Assert.NotNull(res);
             Assert.True(res.Model is IEnumerable<DisplayArticleModel>);
-            _databaseMock.Verify(c=> c.GetAuthorArticlesAsync(It.IsAny<string>(), 0, 10));
+            _databaseMock.Verify(c => c.GetAuthorArticlesAsync(It.IsAny<string>(), 0, 10));
         }
 
         [Fact]

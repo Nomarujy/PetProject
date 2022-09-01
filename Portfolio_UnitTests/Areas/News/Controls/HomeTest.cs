@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Portfolio.Areas.News.Controls;
 using Portfolio.Areas.News.Models.Entity;
-using Portfolio.Areas.News.Models.ViewModel;
 using Portfolio.Areas.News.Models.ViewModel.Home;
 using Portfolio.Areas.News.Services.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Portfolio_UnitTests.Areas.News.Controls
 {

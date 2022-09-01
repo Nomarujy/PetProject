@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Areas._7DTD.Services;
+using Portfolio.Areas.HelloKafka.Services.Kafka;
 using Portfolio.Areas.News.Services.Authorization;
 using Portfolio.Models;
 using Portfolio.Models.Authentication.Entity;
@@ -46,6 +47,7 @@ namespace Portfolio
 
         private static void AddServices(this IServiceCollection service)
         {
+            service.AddSingleton<KafkaProducer>();
             service.AddScoped<IMessageRepository, MessageRepository>();
             service.AddAreaServices();
         }
@@ -62,18 +64,14 @@ namespace Portfolio
             app.UseAuthentication();
             app.UseAuthorization();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                configureDB(scope);
-            }
+            using var scope = app.Services.CreateScope();
+            MigrateDB(scope);
         }
 
-        private static void configureDB(IServiceScope scope)
+        private static void MigrateDB(IServiceScope scope)
         {
-            using (var db = scope.ServiceProvider.GetService<ApplicationDbContext>())
-            {
-                db?.Database.Migrate();
-            }
+            using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            db?.Database.Migrate();
         }
 
         #endregion AppConfigure

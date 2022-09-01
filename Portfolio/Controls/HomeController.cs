@@ -7,12 +7,10 @@ namespace Portfolio.Controls
 {
     public class HomeController : Controller
     {
-        private readonly IMessageRepository _repository;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IMessageRepository repository, ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
-            _repository = repository;
             _logger = logger;
         }
 
@@ -35,11 +33,11 @@ namespace Portfolio.Controls
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(MessageModel model)
+        public IActionResult Index(MessageModel model, [FromServices] IMessageRepository repository)
         {
             if (ModelState.IsValid)
             {
-                _repository.Add(model);
+                repository.Add(model);
                 _logger.LogInformation("Added message by {u}", model.Name);
             }
 
