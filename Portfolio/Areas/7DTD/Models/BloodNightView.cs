@@ -17,14 +17,19 @@
         {
             this.ServerTime = ServerTime;
 
-            int dayPased = ServerTime.Day % 7;
-            DayOfWeek = dayPased == 0 ? 7 : dayPased;
-            BloodNightDay = DayOfWeek == 7 ? ServerTime.Day : ServerTime.Day + 7 - dayPased;
+            BloodNightDay = FindBloodNigthDay();
 
             TimeLeft = FindTimeBeforeBloodNight();
             StartTime = DateTime.Now.Add(TimeLeft);
 
             Percentage = FindPercentage();
+        }
+
+        private int FindBloodNigthDay()
+        {
+            int dayPased = ServerTime.Day % 7;
+            DayOfWeek = dayPased == 0 ? 7 : dayPased;
+            return DayOfWeek == 7 ? ServerTime.Day : ServerTime.Day + 7 - dayPased;
         }
 
 

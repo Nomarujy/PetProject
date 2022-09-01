@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Portfolio.Areas.HelloKafka.Models;
 using Portfolio.Areas.News.Models.Entity;
 using Portfolio.Models.Authentication.Entity;
 using Portfolio.Models.StartPage;
@@ -20,7 +20,7 @@ namespace Portfolio.Models
         {
             base.OnConfiguring(optionsBuilder);
             string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
-            string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "postgres";
+            string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "Dev";
             string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
 
@@ -33,6 +33,7 @@ namespace Portfolio.Models
 
         public DbSet<MessageModel> Messages { get; set; } = null!;
 
+        public DbSet<UserMessage> Chat { get; set; } = null!;
 
         #region News
         public DbSet<Article> Articles { get; set; } = null!;

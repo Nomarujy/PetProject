@@ -10,7 +10,7 @@ namespace Portfolio.Areas._7DTD.Services.Repository
 
         public BloodNightRepository() => InitServerTime(1, 0, 60);
 
-        public BloodNightView GetView() => new(_serverTime);
+        public BloodNightView GetView() => new BloodNightView(_serverTime);
 
         public void InitServerTime(int Day, int Hour, int MinsPerDay)
         {

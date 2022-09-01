@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Portfolio.Areas.News.Controls;
 using Portfolio.Areas.News.Models.Entity;
-using Portfolio.Areas.News.Models.ViewModel;
+using Portfolio.Areas.News.Models.ViewModel.Home;
 using Portfolio.Areas.News.Services.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Portfolio_UnitTests.Areas.News.Controls
 {
@@ -27,7 +21,7 @@ namespace Portfolio_UnitTests.Areas.News.Controls
             };
 
             _databaseMock = new();
-            _databaseMock.Setup(c => c.GetRecentlyAsync(It.IsAny<int>()));
+            _databaseMock.Setup(c => c.GetRecentlyAsync(It.IsAny<int>())).ReturnsAsync(new RecentlyViewModel());
             _authorizationServiceMock = new();
 
             controller = new(_databaseMock.Object, _authorizationServiceMock.Object);
@@ -39,7 +33,7 @@ namespace Portfolio_UnitTests.Areas.News.Controls
             var res = await controller.Index() as ViewResult;
 
             Assert.NotNull(res);
-            Assert.True(res.Model is NewsViewModel);
+            Assert.True(res.Model is RecentlyViewModel);
 
             _databaseMock.Verify();
         }
@@ -55,12 +49,8 @@ namespace Portfolio_UnitTests.Areas.News.Controls
         public static IEnumerable<object[]> ReadData()
         {
             yield return new object[] { 0, typeof(NotFoundResult) };
-           // yield return new object[] { 1, typeof(ForbidResult) };
-           // yield return new object[] { 2, typeof(ViewResult) };
-        }
-        private void SetupDatabase()
-        {
-
+            //yield return new object[] { 1, typeof(ForbidResult) };
+            //yield return new object[] { 2, typeof(ViewResult) };
         }
     }
 }

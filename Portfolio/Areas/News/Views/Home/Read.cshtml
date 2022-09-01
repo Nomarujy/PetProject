@@ -1,9 +1,7 @@
-﻿@model NewsViewModel
+﻿@model ReadViewModel
 @{
     ViewBag.Title = "Article";
 }
-
-
 <div id="main-wrapper">
 	<div class="wrapper style2">
 		<div class="inner">
@@ -37,13 +35,13 @@
 						<section class="box article-list">
 							<h2 class="icon fa-file-alt">Recent Posts</h2>
 
-							@foreach (var item in Model.ArticleList)
+							@foreach (var item in Model.Recently.ArticleList)
 							{
 								<article class="box excerpt">
 									<a class="image left" asp-action="Read" asp-controller="Home" asp-route-Id="@item.Id"><img src="/Areas/News/images/pic04.jpg" alt="" /></a>
 									<div>
 										<header>
-											<span class="date">@item.DateOfPublishing</span>
+											<span class="date">@item.PubleshedTime</span>
 											<h3><a asp-action="Article" asp-controller="Home" asp-route-Id="@item.Id">@item.Title</a></h3>
 										</header>
 										<p>
@@ -61,16 +59,16 @@
 						<section class="box spotlight">
 							<h2 class="icon fa-file-alt">Spotlight</h2>
 							<article>
-								<a class="image featured" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
+								<a class="image featured" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Recently.Spotlight.Id"><img src="/Areas/News/images/pic07.jpg" alt=""></a>
 								<header>
-									<h3><a asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id">@Model.Spotlight.Title</a></h3>
-									<p>Author: @Model.Spotlight.AuthorUserName</p>
+									<h3><a asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Recently.Spotlight.Id">@Model.Recently.Spotlight.Title</a></h3>
+									<p>Author: @Model.Recently.Spotlight.AuthorName</p>
 								</header>
 								<p>
-									@Model.Spotlight.Description
+									@Model.Recently.Spotlight.Description
 								</p>
 								<footer>
-									<a class="button alt icon solid fa-file-alt" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Spotlight.Id">Continue Reading</a>
+									<a class="button alt icon solid fa-file-alt" asp-action="Read" asp-controller="Home" asp-route-Id="@Model.Recently.Spotlight.Id">Continue Reading</a>
 								</footer>
 							</article>
 						</section>

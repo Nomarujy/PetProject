@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)docker-compose.yaml" />
     <None Include="$(MSBuildThisFileDirectory)App\dockerfile" />
+    <None Include="$(MSBuildThisFileDirectory)kafka\docker-compose.yaml" />
     <None Include="$(MSBuildThisFileDirectory)nginx\cfg\conf.d\default.conf" />
     <None Include="$(MSBuildThisFileDirectory)nginx\cfg\fastcgi_params" />
     <None Include="$(MSBuildThisFileDirectory)nginx\cfg\mime.types" />

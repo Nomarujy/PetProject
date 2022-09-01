@@ -1,0 +1,18 @@
+﻿@model IEnumerable<UserMessage>
+@{
+}
+
+<form method="post" asp-action="SendMessage">
+    <input type="text" name="messageString" />
+    <input type="submit" />
+</form>
+
+<p>Последние сообщения</p>
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            @Html.Raw(item.Html)
+        </tr>
+    }
+</table>

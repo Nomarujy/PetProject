@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Article>
+﻿@model IEnumerable<DisplayArticleModel>
 @{
     ViewBag.Title = "Hystory";
     ViewBag.ManageClass = "current_page_item";
@@ -16,7 +16,8 @@
     {
         <tr>
             <td>@item.Title</td>
-            <td>@item.IsPubleshed</td>
+            <td>@item.Published</td>
+            <td>@item.PubleshedTime</td>
             <td>@item.Description</td>
             <td><a asp-action="Article" asp-controller="Analytics" asp-route-Id="@item.Id">Analytic</a></td>
             <td><a asp-action="Update" asp-controller="manage" asp-route-Id="@item.Id">Edit</a></td>

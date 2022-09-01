@@ -1,21 +1,29 @@
 ﻿using Portfolio.Areas.News.Models.Entity;
-using Portfolio.Areas.News.Models.ViewModel;
+using Portfolio.Areas.News.Models.ViewModel.Analytics;
+using Portfolio.Areas.News.Models.ViewModel.Home;
 
 namespace Portfolio.Areas.News.Services.Repository
 {
     public interface IArticleRepository
     {
+        #region Article
         Task AddArticleAsync(Article model);
-        Task<Article?> GetByIdAsync(int Id);
-        Task<IEnumerable<Article>> GetRecentlyAsync(int count);
-        Task<Article?> GetSpotlight();
+        Task<Article?> GetAsync(int Id);
+        Task UpdateAsync(Article form);
 
-        Task<IEnumerable<Article>> GetArticlesByAuthorIdAsync(string authorId);
-        Task UpdateArticleAsync(Article article);
+        #endregion Article
 
-        Task WriteToHistory(string userId, int articleId);
-        Task<IEnumerable<ArticleViewers>> GetUserHistory(string userId);
+        Task<RecentlyViewModel> GetRecentlyAsync(int count = 5);
 
-        Task<AnalyticModel?> GetAnaliticsByIdAsync(int articleId, string AuthorId);
+        Task<IEnumerable<DisplayArticleModel>> GetAuthorArticlesAsync(string authorId, int Page = 0, int count = 10);
+
+        #region History
+
+        Task AddToUserHistoryAsync(string userId, int articleId);
+        Task<IEnumerable<ArticleViewers>> GetUserHistoryAsync(string userId, int Page = 0, int count = 10);
+
+        #endregion History
+
+        Task<AnalyticModel> GetArticleAnaliticsAsync(int articleId);
     }
 }

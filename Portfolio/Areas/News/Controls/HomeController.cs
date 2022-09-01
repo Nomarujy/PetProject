@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Areas.News.Models.Entity;
-using Portfolio.Areas.News.Models.ViewModel;
+using Portfolio.Areas.News.Models.ViewModel.Home;
 using Portfolio.Areas.News.Services.Repository;
 using System.Security.Claims;
 
@@ -20,13 +19,13 @@ namespace Portfolio.Areas.News.Controls
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View(await GetViewModel());
+        public async Task<IActionResult> Index() => View(await _database.GetRecentlyAsync());
 
 
         [HttpGet]
         public async Task<IActionResult> Read(int Id)
         {
-            var article = await _database.GetByIdAsync(Id);
+            var article = await _database.GetAsync(Id);
             if (article != null)
             {
                 var result = await _authorizationService.AuthorizeAsync(User, article, "News_Read");
@@ -35,10 +34,15 @@ namespace Portfolio.Areas.News.Controls
                     string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     if (userId != null)
                     {
-                        await _database.WriteToHistory(userId, article.Id);
+                        await _database.AddToUserHistoryAsync(userId, article.Id);
                     }
 
-                    return View(await GetViewModel(article));
+                    ReadViewModel model = new()
+                    {
+                        Recently = await _database.GetRecentlyAsync(),
+                        Article = article,
+                    };
+                    return View(model);
                 }
                 else
                 {
@@ -48,20 +52,13 @@ namespace Portfolio.Areas.News.Controls
             return NotFound();
         }
 
-        private async Task<NewsViewModel> GetViewModel(Article? article = null)
-        {
-            var recentlyPost = await _database.GetRecentlyAsync(5);
-            Article? spotlight = await _database.GetSpotlight();
-            return new NewsViewModel(recentlyPost, spotlight, article);
-        }
-
         [Authorize, HttpGet]
         public async Task<IActionResult> History()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId != null)
             {
-                var history = await _database.GetUserHistory(userId);
+                var history = await _database.GetUserHistoryAsync(userId);
                 return View(history);
             }
             return Forbid();

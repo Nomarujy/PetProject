@@ -5,8 +5,8 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "POSTGRES_HOST": "192.168.1.200",
-        "POSTGRES_Database": "Dev"
+        "POSTGRES_HOST": "192.168.1.200:35432",
+        "KAFKA_HOST": "192.168.1.200:29000"
       },
       "applicationUrl": "https://localhost:5000;http://localhost:5001",
       "dotnetRunMessages": true

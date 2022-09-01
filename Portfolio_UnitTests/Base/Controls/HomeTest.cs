@@ -16,7 +16,7 @@ namespace Portfolio_UnitTests.Areas.Base.Controls
         {
             repositoryMock = new();
             logerMock = new();
-            controller = new(repositoryMock.Object, logerMock.Object);
+            controller = new(logerMock.Object);
 
             controller.ControllerContext.HttpContext = HttpContextMock.Get();
         }
@@ -34,7 +34,7 @@ namespace Portfolio_UnitTests.Areas.Base.Controls
         {
             MessageModel message = new();
 
-            var res = controller.Index(message) as ViewResult;
+            var res = controller.Index(message, repositoryMock.Object) as ViewResult;
 
             Assert.NotNull(res);
 
