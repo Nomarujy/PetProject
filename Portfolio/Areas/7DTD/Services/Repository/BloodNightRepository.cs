@@ -18,7 +18,7 @@ namespace Portfolio.Areas._7DTD.Services.Repository
 
             refreshPeriod = TimeSpan.FromMinutes(_serverTime.MinutesPerHour);
             _timer?.Dispose();
-            _timer = new Timer(new TimerCallback(Refresh), null, refreshPeriod, refreshPeriod);
+            _timer = new Timer(Refresh, null, refreshPeriod, refreshPeriod);
         }
 
         private void Refresh(object? alwaysNull)

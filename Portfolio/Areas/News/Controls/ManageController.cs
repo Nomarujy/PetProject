@@ -94,7 +94,7 @@ namespace Portfolio.Areas.News.Controls
                     _logger.LogInformation("Updated article with id: {articleId}", article.Id);
                     await _database.UpdateAsync(article);
 
-                    return RedirectToAction("MyArticle", "Analytics");
+                    return RedirectToAction("MyArticles", "Analytics", new { area = "News" });
                 }
                 else
                 {
